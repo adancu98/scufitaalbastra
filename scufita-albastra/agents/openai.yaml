@@ -1,0 +1,7 @@
+interface:
+  display_name: "Scufița Albastră · Photoshop"
+  short_description: "Create polished designs and editable Photoshop PSDs"
+  default_prompt: "Use $scufita-albastra to create the requested Photoshop design with appropriate visual generation, careful review and an editable PSD."
+
+policy:
+  allow_implicit_invocation: true
