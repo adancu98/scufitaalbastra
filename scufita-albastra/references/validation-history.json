@@ -1,0 +1,23 @@
+{
+  "checked_on": "2026-11-10",
+  "scope": "Historical synthetic infrastructure fixture; no creative-quality or recipient-machine certification. Raw files and session logs are not distributed.",
+  "reported_checks": {
+    "saved_psd_reopened": true,
+    "live_text_changed": true,
+    "smart_object_moved": true,
+    "undo_restored_original_layer_tree": true,
+    "layer_summary": {
+      "layers": 8,
+      "groups": 1,
+      "text_layers": 3,
+      "smart_objects": 1,
+      "user_masks": 2,
+      "vector_masks": 1,
+      "adjustment_layers": 1
+    },
+    "overview_inspected": true,
+    "true_pixel_type_crop_inspected": true
+  },
+  "generation_jobs_started": 0,
+  "recipient_machine_tested": false
+}

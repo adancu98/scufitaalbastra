@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-11-10",
+  "timezone": "Europe/Bucharest",
+  "evidence_scope": "Historical provider catalog snapshot only. No accounts, credentials, credits or active connector sessions are included in this repository.",
+  "primary_route": "higgsfield-gpt-image-2.6",
+  "runtime_status": {
+    "catalog_snapshot_inspected": true,
+    "snapshot_date": "2026-11-10",
+    "executed_generation": false,
+    "recipient_machine_tested": false,
+    "credentials_included": false,
+    "own_connector_required": true,
+    "account_note": "Connect your own provider account when generation is requested. Catalog presence does not establish credits or job eligibility."
+  },
+  "tools": {
+    "model_get": "mcp__codex_apps__higgsfield_models_get",
+    "model_search": "mcp__codex_apps__higgsfield_models_search",
+    "preferences": "mcp__codex_apps__higgsfield_get_preferences",
+    "estimate": "mcp__codex_apps__higgsfield_estimate_image_cost",
+    "generate": "mcp__codex_apps__higgsfield_generate_image",
+    "generate_batch": "mcp__codex_apps__higgsfield_generate_image_batch",
+    "wait": "mcp__codex_apps__higgsfield_jobs_wait",
+    "user_attachment_upload": "mcp__codex_apps__higgsfield_media_upload_and_confirm",
+    "remote_upload_slot": "mcp__codex_apps__higgsfield_media_upload",
+    "remote_upload_confirmation": "mcp__codex_apps__higgsfield_media_confirm",
+    "native_image_generation": "image_gen__imagegen",
+    "photoshop_state": "mcp__photoshop__photoshop_get_state",
+    "photoshop_import": "mcp__photoshop__photoshop_place_image",
+    "photoshop_preview": "mcp__photoshop__photoshop_get_preview",
+    "photoshop_save": "mcp__photoshop__photoshop_save_document",
+    "download_to_local_file": null
+  },
+  "models": [
+    {
+      "key": "higgsfield-gpt-image-2.6",
+      "role": "primary",
+      "provider": "OpenAI",
+      "connector": "Higgsfield",
+      "plugin_model_id": "gpt_image_2_6",
+      "direct_api_model_id": "gpt-image-2.6-sunburst",
+      "availability": "historical_catalog_snapshot; discover and connect your own tools",
+      "output_formats": [
+        "png",
+        "jpeg",
+        "webp",
+        "gif",
+        "svg"
+      ],
+      "quality_values": [
+        "auto",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "resolution_values": [
+        "1k",
+        "2k",
+        "4k"
+      ],
+      "observed_defaults": {
+        "quality": "low",
+        "resolution": "1k",
+        "output_format": "png"
+      },
+      "final_output_policy": "Select explicit appropriate quality and resolution from the brief; do not inherit low/1k draft defaults for final artwork.",
+      "reference_input": {
+        "canonical_role": "image",
+        "accepted_values": [
+          "confirmed_media_uuid",
+          "completed_generation_job_uuid",
+          "authorized_https_image_url"
+        ],
+        "svg_accepts_references": false
+      },
+      "supports_transparent_raster": true,
+      "semantic_psd_output": false,
+      "executed_generation": false
+    },
+    {
+      "key": "higgsfield-nano-banana-2.1",
+      "role": "secondary",
+      "provider": "Google",
+      "connector": "Higgsfield",
+      "plugin_model_id": "nano_banana_2_1",
+      "direct_api_model_id": "gemini-nano-banana-2.1",
+      "availability": "historical_catalog_snapshot; discover and connect your own tools",
+      "resolution_values": [
+        "1k",
+        "2k",
+        "4k"
+      ],
+      "thinking_level_values": [
+        "minimal",
+        "medium",
+        "high"
+      ],
+      "observed_defaults": {
+        "resolution": "1k",
+        "thinking_level": "medium",
+        "is_inpaint": false
+      },
+      "other_parameters": [
+        "enable_web_search",
+        "enable_image_search",
+        "seed"
+      ],
+      "catalog_backend_media_roles": [
+        "image_references",
+        "mask",
+        "video_references"
+      ],
+      "verified_common_reference_role": "image",
+      "mask_video_reference_routing_status": "unresolved_common_generate_tool_schema_mapping_not_verified",
+      "semantic_psd_output": false,
+      "executed_generation": false
+    },
+    {
+      "key": "higgsfield-gpt-image-2.6-flare",
+      "role": "optional_iteration",
+      "provider": "OpenAI",
+      "connector": "Higgsfield",
+      "plugin_model_id": "gpt_image_2_6_flare",
+      "direct_api_model_id": "gpt-image-2.6-flare",
+      "availability": "historical_catalog_snapshot; discover and connect your own tools",
+      "output_formats": [
+        "png",
+        "jpeg",
+        "webp",
+        "gif",
+        "svg"
+      ],
+      "quality_values": [
+        "auto",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "resolution_values": [
+        "1k",
+        "2k",
+        "4k"
+      ],
+      "observed_defaults": {
+        "quality": "low",
+        "resolution": "1k",
+        "output_format": "png"
+      },
+      "svg_accepts_references": false,
+      "supports_transparent_raster": true,
+      "semantic_psd_output": false,
+      "executed_generation": false
+    },
+    {
+      "key": "native-imagegen",
+      "role": "host_native_route_when_selected_or_required",
+      "provider": "host_builtin",
+      "connector": null,
+      "plugin_model_id": null,
+      "direct_api_model_id": null,
+      "tool": "image_gen__imagegen",
+      "availability": "host-dependent; discover the native tool in your session",
+      "requires_new_api_key": false,
+      "model_selection_exposed": false,
+      "quality_resolution_arguments_exposed": false,
+      "reference_mechanisms": [
+        "referenced_image_paths",
+        "num_last_images_to_include"
+      ],
+      "reference_mechanisms_mutually_exclusive": true,
+      "local_input_inspection_required": true,
+      "semantic_psd_output": false,
+      "executed_generation": false
+    }
+  ],
+  "optional_unconnected_candidates": [
+    {
+      "name": "Ideogram Layerize Text",
+      "status": "documented_optional_unconnected",
+      "endpoint": "https://api.ideogram.ai/v2/design/layerize/ideogram-3",
+      "possible_role": "Text-free base image and positioned text blocks for a future Photoshop type-layer adapter.",
+      "native_psd_export": false,
+      "adapter_implemented": false,
+      "executed_generation": false
+    },
+    {
+      "name": "Qwen Image Layered",
+      "status": "optional_unconnected_research_candidate",
+      "plugin_model_id": null,
+      "direct_api_model_id": null,
+      "adapter_implemented": false,
+      "executed_generation": false
+    },
+    {
+      "name": "Ming",
+      "status": "optional_unconnected_research_candidate",
+      "plugin_model_id": null,
+      "direct_api_model_id": null,
+      "adapter_implemented": false,
+      "executed_generation": false
+    }
+  ],
+  "identifier_sources": [
+    "https://developers.openai.com/api/docs/models/gpt-image-2.6-sunburst",
+    "https://developers.openai.com/api/docs/guides/image-generation",
+    "https://firebase.google.com/docs/ai-logic/generate-images-gemini",
+    "https://developer.ideogram.ai/v2/api-reference/images/layerize/ideogram-3"
+  ],
+  "notes": [
+    "Plugin aliases are not direct API model identifiers.",
+    "Model access, billing and actual generation must be checked at execution time.",
+    "Do not infer semantic PSD editability from PNG, SVG, a placed Smart Object or a completed job.",
+    "No universal per-generation approval requirement is added: honor user authorization, budgets, actual tool rules and explicit choices such as unlim_choice.",
+    "Installing this repository does not connect any account or transfer paid access."
+  ]
+}

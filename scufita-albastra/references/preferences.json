@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "precedence": "Current user instructions override stored preferences; apply only matching scopes.",
+  "preferences": [],
+  "approved_visual_reference_sets": [],
+  "note": "Personal preferences belong only in the installed local copy. Do not commit conversation excerpts or personal project history to this repository."
+}
