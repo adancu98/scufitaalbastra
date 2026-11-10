@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "photoshop": {
+      "command": "npx",
+      "args": ["-y", "@alisaitteke/photoshop-mcp@1.7.37"],
+      "env": {
+        "ANALYTICS_DISABLED": "1",
+        "PSMCP_FEEDBACK": "0",
+        "PSMCP_UPDATE_CHECK": "0",
+        "LOG_LEVEL": "2"
+      }
+    }
+  }
+}
