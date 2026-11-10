@@ -1,0 +1,7 @@
+interface:
+  display_name: "Photoshop MCP Techniques"
+  short_description: "Choose sourced Photoshop techniques for the task"
+  default_prompt: "Use $photoshop-mcp-techniques to make the requested Photoshop edit with suitable techniques and visual checks."
+
+policy:
+  allow_implicit_invocation: true
