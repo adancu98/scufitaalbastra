@@ -1,0 +1,87 @@
+{
+  "checked_on": "2026-11-09",
+  "catalog_url": "https://www.adobe.com/uk/learn/photoshop",
+  "catalog_complete": false,
+  "catalog_pages_verified": [
+    1
+  ],
+  "pagination_observed_last_button": 20,
+  "catalog_total_tutorials": null,
+  "remaining_catalog_pages": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "pagination_limit": "Only page1 and selected linked/searched tutorials were read; last pagination button is observed, not a count of verified pages or tutorials.",
+  "themes_requested": [
+    "selections",
+    "masks",
+    "layers",
+    "color",
+    "retouch",
+    "composition",
+    "text",
+    "smart-objects",
+    "generative",
+    "export"
+  ],
+  "resume": [
+    "Recheck catalog date/pagination and pick the next bounded batch.",
+    "Record each page URL, access result, text/transcript actually read and missing media.",
+    "Map current tools and side effects before tests; use disposable fixtures.",
+    "Require an inspected visual result before upgrading any recipe to validated."
+  ],
+  "next_priorities": [
+    "Remaining catalog pages2–20",
+    "Fine-edge refinement and manual mask painting not exposed natively",
+    "Healing/Clone Stamp/Color Balance/Perspective Warp capability gaps",
+    "Profile-controlled print workflow and requested printer specifications",
+    "Generative account/model/credit checks only when a generation task is requested"
+  ],
+  "initial_batch": {
+    "cards": 20,
+    "card_ids": [
+      "geometric-selections",
+      "select-subject",
+      "refine-selection-edges",
+      "editable-layer-masks",
+      "gradient-mask-blend",
+      "organize-layer-groups",
+      "clipping-masks",
+      "curves-adjustment-layer",
+      "neutralize-color-cast",
+      "targeted-hue-saturation",
+      "spot-heal-separate-layer",
+      "clone-stamp-controlled-repair",
+      "crop-straighten-composition",
+      "transform-perspective-alignment",
+      "smart-object-place-transform",
+      "smart-filters",
+      "editable-type",
+      "generative-fill",
+      "generative-expand",
+      "resize-export"
+    ],
+    "source_registry_urls": 40,
+    "historical_component_reports": 13,
+    "not_run": 7,
+    "note": "Source registry includes partial/inaccessible entries;40URLs does not mean40complete tutorials."
+  },
+  "extension_rule": "Extend in bounded batches, preserve existing cards, append useful local experience, and distinguish historical reports from tests actually run on the current machine."
+}

@@ -1,0 +1,86 @@
+[
+  {
+    "batch": "foundations",
+    "findings": [
+      {
+        "id": "background-removal-intent",
+        "adobe_documented": "Several selected Adobe tutorials demonstrate Select Subject followed by mask creation to replace a background.",
+        "local_contract": "For remove-background intent, server instructions require get_state, recipe_remove_background, get_preview, then stop; several atomic and scripting workarounds are forbidden.",
+        "resolution": "Keep these general selection/mask cards available for other suitable tasks; route explicit background removal to the server contract and do not silently adopt the tutorial chain."
+      },
+      {
+        "id": "destructive-beginner-example",
+        "adobe_documented": "Learn selection basics demonstrates Image > Adjustments on the selected pixels.",
+        "local_preference": "User asks for editable layers, masks, and Smart Objects when supported.",
+        "resolution": "Teach the selection concept, but use an available nondestructive adjustment-layer route when its MCP implementation is verified; document any unsupported route."
+      },
+      {
+        "id": "ui-not-mcp-equivalence",
+        "adobe_documented": "Select and Mask tutorials include interactive Refine Edge Brush, preview modes, and preference choices.",
+        "local_capability": "This research batch has not mapped or executed those controls through MCP.",
+        "resolution": "Keep mapping_pending until tools and implementation are inspected. A similarly named refinement tool does not prove all interactive controls are exposed."
+      }
+    ]
+  },
+  {
+    "batch": "color-retouch",
+    "findings": [
+      {
+        "id": "curves-endpoint-prose",
+        "source_url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/adjust-color-and-tone-with-curves.html",
+        "issue": "The 2026 paragraph on endpoint movement describes moving the lower-left point right as lightening shadows and the upper-right point left as darkening highlights. This conflicts with the same article's input/output mapping and its description of black/white input sliders.",
+        "handling": "Do not encode those endpoint-direction sentences into a recipe. The card uses the internally consistent vertical point movement rule only. Verify any endpoint mapping on a grayscale copy before declaring it tested.",
+        "status": "quarantined_not_integrated",
+        "checked_on": "2026-11-09"
+      },
+      {
+        "id": "learn-platform-parity",
+        "source_urls": [
+          "https://www.adobe.com/learn/photoshop/web/edit-photos-adjustment-layers",
+          "https://www.adobe.com/learn/photoshop/web/remove-objects-from-your-photos"
+        ],
+        "issue": "These Learn tutorials explicitly demonstrate Photoshop on the web. Their UI controls, defaults, saving behavior, and layer sampling do not prove parity with the installed desktop ExtendScript MCP.",
+        "handling": "Keep the documented editing principles, confirm desktop behavior through Help and current MCP schemas, and leave actual MCP support and execution status separate.",
+        "status": "platform_difference_documented",
+        "checked_on": "2026-11-09"
+      },
+      {
+        "id": "perspective-warp-legacy-transcript",
+        "source_url": "https://www.adobe.com/learn/photoshop/web/photoshop-perspective-warp",
+        "issue": "The page has a July 2026 publication date while its transcript calls Perspective Warp a new Photoshop CC feature.",
+        "handling": "Treat the transcript as technique evidence only; verify current version, hardware, and MCP availability independently. Do not infer a 2026-only requirement or confuse Free Transform perspective with Perspective Warp.",
+        "status": "version_claim_not_integrated",
+        "checked_on": "2026-11-09"
+      }
+    ]
+  },
+  {
+    "batch": "objects-export",
+    "findings": [
+      {
+        "issue": "Legacy keyboard transform modifier",
+        "sources": [
+          "https://www.adobe.com/learn/photoshop/web/applying-filters-basics"
+        ],
+        "resolution": "Retain the proportional-transform objective; verify current behavior/parameters instead of transcribing the old Shift instruction."
+      },
+      {
+        "issue": "PPI simplified recommendations versus actual output requirements",
+        "sources": [
+          "https://www.adobe.com/learn/photoshop/web/image-resizing-basics",
+          "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/resize-images.html"
+        ],
+        "resolution": "The detailed Learn transcript limits300ppi to a typical inkjet example and distinguishes screen pixels from PPI. Print-specific requirements remain contextual; do not hardcode300ppi for wallpaper."
+      },
+      {
+        "issue": "Generative cost/output/model information changes across dated Adobe pages",
+        "sources": [
+          "https://helpx.adobe.com/photoshop/desktop/generative-ai/frequently-asked-questions-about-generative-ai-features.html",
+          "https://helpx.adobe.com/creative-cloud/apps/generative-ai/creative-cloud-generative-ai-features.html",
+          "https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/edit-images-with-generative-fill.html"
+        ],
+        "resolution": "Do not freeze older FAQ claims of one credit or1024px across all models. Check current model, plan, output size, credit terms and installed-version support. Account access and MCP execution remain untested."
+      }
+    ]
+  }
+]

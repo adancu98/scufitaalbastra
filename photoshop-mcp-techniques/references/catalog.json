@@ -1,0 +1,2335 @@
+{
+  "checked_on": "2026-11-09",
+  "cards": [
+    {
+      "id": "geometric-selections",
+      "title": "Geometric selections and selection arithmetic",
+      "theme": "selections",
+      "problem": "Confine an edit to a known rectangular, elliptical, or straight-sided region instead of changing the entire photograph.",
+      "when_to_use": [
+        "The target has measurable geometric boundaries.",
+        "Only part of a layer should receive an adjustment, fill, or mask."
+      ],
+      "avoid": [
+        "Do not make a selection for a simple whole-image resize.",
+        "Do not approximate hair, curved product details, or spokes with a rectangle."
+      ],
+      "preconditions": [
+        "Identify the intended document, layer, canvas dimensions, and whether an existing selection must be preserved."
+      ],
+      "limits": [
+        "A visible selection border does not describe partial transparency along a feathered edge.",
+        "The beginner tutorial demonstrates direct image adjustments; this library prefers an adjustment layer or mask when the verified MCP path permits editability."
+      ],
+      "essential_steps": [
+        "Choose the simplest suitable geometric selector and define its bounds.",
+        "Add missing regions or subtract excess regions rather than starting again unnecessarily.",
+        "Invert the selection only when the complementary area is the intended target.",
+        "Perform the requested local operation, then deselect so later edits are not accidentally restricted."
+      ],
+      "adapt_parameters": [
+        "Adapt bounds to the actual document pixels and target geometry.",
+        "Use zero feather for intentionally crisp boundaries; increase it only for a visibly required transition.",
+        "Use a fixed ratio or equal dimensions only when the request requires those proportions."
+      ],
+      "visual_check": [
+        "Preview the boundary against the intended object at close view.",
+        "Compare the edited and untouched regions; confirm no spill beyond the intended area.",
+        "Confirm that a later whole-image operation is no longer constrained by a leftover selection."
+      ],
+      "library_recommendations": [
+        "The visual checks and decision to avoid unnecessary selection are library guidance, not a claim that Adobe prescribes a particular design style."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/rectangular-marquee-tool",
+        "title": "Learn selection basics",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Accessible written transcript and What you learned section read; video not played or visually analyzed.",
+        "sections_read": [
+          "Creating a basic selection with the marquee tool",
+          "Adding to and subtracting from selections",
+          "Applying adjustments inside a selection",
+          "Inverting and deselecting selections"
+        ],
+        "supplemental_sources": [
+          {
+            "url": "https://www.adobe.com/learn/photoshop/web/types-selection-tools",
+            "title": "Try out simple selection tools",
+            "content_read": "transcript",
+            "coverage": "Read geometric and polygonal selection demonstrations and summary."
+          },
+          {
+            "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/get-started-selections/make-selections-with-marquee-tools.html",
+            "title": "Make selections with the Marquee tools",
+            "content_read": "article_text",
+            "coverage": "Read desktop tool options including feather, anti-aliasing, style, and selection modes."
+          }
+        ]
+      },
+      "documented_by_adobe": true,
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "mcp_tools": [],
+      "test_status": "historical_report_not_reproduced_here",
+      "mcp": {
+        "feasibility": "partial_native",
+        "tools": [
+          "photoshop_select_rectangle",
+          "photoshop_select_ellipse",
+          "photoshop_select_all",
+          "photoshop_invert_selection",
+          "photoshop_deselect",
+          "photoshop_get_selection_bounds",
+          "photoshop_feather_selection",
+          "photoshop_save_selection",
+          "photoshop_execute_script"
+        ],
+        "parameters": {
+          "document_id": "Pass the positive target document id from state/list_documents; the live schema includes document_id on these tools.",
+          "rectangle": "left, top, right, bottom in document pixels; optional mode: replace, add, subtract, intersect. Default replace.",
+          "ellipse": "left, top, right, bottom in document pixels; right > left and bottom > top. No combine-mode parameter is advertised.",
+          "feather": "pixels >= 1; the handler rounds to an integer. For a crisp boundary, omit feather rather than passing zero.",
+          "saved_selection": "Optional channel_name; saves an alpha channel, but no native load-selection tool is present in this discovery snapshot."
+        },
+        "limits": [
+          "Rectangle and ellipse are native; polygonal/freehand lasso and arbitrary path selection are not atomic tools in this 128-tool catalog. Scoped scripting is an unvalidated alternative only when no matching native operation exists and the intent permits it.",
+          "Non-replace rectangle modes are advertised as Action Manager operations independent of SelectionType, but the inspected helper actually calls SelectionType.EXTEND, DIMINISH, or INTERSECT. Do not promise those modes work in every host/version before executing a fixture.",
+          "Rectangle handler returns a text confirmation rather than parsed actual bounds. Read get_selection_bounds and inspect a resulting mask/local edit to verify geometry.",
+          "Ellipse replaces the current selection. It does not expose the tutorial's add/subtract ellipse arithmetic, anti-alias switch, fixed ratio, or fixed size UI settings. Preserve proportions numerically through equal or ratio-derived bounds."
+        ],
+        "server_contract_notes": [
+          "Bootstrap once per MCP session, inspect target state before action, and pin document_id. Adapt all bounds from the actual document dimensions.",
+          "For explicit remove-background/cut-out/isolate/transparent-background intent, do not use this selection chain or a script workaround. Follow the strict state -> remove-background recipe -> preview -> stop sequence instead.",
+          "A helper that automatically inserts get_state before every tool would break that strict background-removal sequence; exclude that intent from automatic per-tool state insertion. This mapping does not execute it."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json: advertised tool names and parameter schemas, server1.7.37.",
+          "photoshop-mcp/src/tools/selection-tools.ts:72-233,416-565,569-614: ellipse/rectangle schemas and handlers, pixel modifier rounding.",
+          "photoshop-mcp/src/api/extendscript.ts:306-334: __mcp_selectRect uses SelectionType for non-replace modes despite the description's contrary claim.",
+          "photoshop-mcp/src/api/extendscript.ts:2707-2850: ellipse and selection edge modification snippets.",
+          "photoshop-mcp/src/prompts/instructions.ts: strict background-removal and state/document-pinning contract."
+        ]
+      },
+      "runtime": {
+        "status": "historical_report_not_reproduced_here",
+        "reported_status": "validated_rectangle_fixture_only",
+        "reported_checked_on": "2026-11-09",
+        "reported_environment": {
+          "photoshop": "27.11.0",
+          "mcp": "1.7.37",
+          "commit": "ba36d8f2a28ecc56686568f3c0191e388336d498"
+        },
+        "observations": [
+          "Rectangle250,280–710,620 produced the expected red-only rectangular visible region. Selection bounds and mask descriptor were inspected."
+        ],
+        "limits": [
+          "Ellipse, add/subtract/intersect arithmetic and difficult organic edges were not tested.",
+          "Historical development summary only. Raw logs, local paths and fixture files are not distributed; installation does not run or certify this operation."
+        ]
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "select-subject",
+      "title": "Select the principal subject automatically",
+      "theme": "selections",
+      "problem": "Obtain an initial selection of the photograph's main subject without tracing every boundary manually.",
+      "when_to_use": [
+        "The requested edit concerns the principal subject, such as a local color or tone correction.",
+        "Automatic selection can provide a useful starting point for a selection that will be inspected."
+      ],
+      "avoid": [
+        "Do not assume the principal subject is the specific object requested in a multi-object scene.",
+        "For the server's remove-background intent, follow its dedicated recipe contract instead of reproducing this tutorial's Select Subject plus mask chain."
+      ],
+      "preconditions": [
+        "Make the subject-containing layer the intended target.",
+        "Check the installed Photoshop capabilities and the live MCP tool schema before using AI-assisted selection."
+      ],
+      "limits": [
+        "The tutorial describes Cloud and Device processing choices; this research does not prove that MCP exposes that preference or that cloud processing is available to this account.",
+        "Low contrast, reflections, and thin details can produce imperfect or soft boundaries."
+      ],
+      "essential_steps": [
+        "Target the layer containing the requested subject.",
+        "Run Select Subject through the verified supported route.",
+        "Inspect the subject selection and its excluded interior areas.",
+        "Use the selection for the requested local operation, or refine a demonstrated defect before proceeding."
+      ],
+      "adapt_parameters": [
+        "Adapt the decision to use this selector to subject count and visual separation from the background.",
+        "Do not silently change global image-processing preferences to match the tutorial's example.",
+        "Refinement strength must follow observed edge problems rather than a preset."
+      ],
+      "visual_check": [
+        "Inspect both the outside contour and holes between thin details at close view.",
+        "Check that the intended subject was selected completely and unrelated objects were not included.",
+        "Recheck the actual edit at normal viewing size; a selection's presence is not evidence of acceptable image quality."
+      ],
+      "library_recommendations": [
+        "Intent routing, account checks, and MCP boundaries are local operational guidance. Adobe's accessible transcript documents the Photoshop technique."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/select-subject-one-click",
+        "title": "How to select a subject with one click in Photoshop",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Read accessible transcript from introduction through final workflow tips and written summary; did not play the video.",
+        "sections_read": [
+          "Selecting a main subject with select subject",
+          "Understanding select subject settings and preferences",
+          "Creating detailed masks for complex subjects",
+          "Refining composites and final workflow tips"
+        ],
+        "supplemental_sources": [
+          {
+            "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/automatic-color-based-selections/detect-subject-using-select-subject.html",
+            "title": "Detect subject using Select Subject",
+            "content_read": "article_text",
+            "coverage": "Read desktop command overview and advice to use Object Selection for one specific object among multiple subjects."
+          }
+        ]
+      },
+      "documented_by_adobe": true,
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "mcp_tools": [],
+      "test_status": "historical_report_not_reproduced_here",
+      "mcp": {
+        "feasibility": "native_subject_selection_only",
+        "tools": [
+          "photoshop_get_capabilities",
+          "photoshop_select_subject",
+          "photoshop_select_layer_by_name",
+          "photoshop_get_selection_bounds",
+          "photoshop_get_preview"
+        ],
+        "parameters": {
+          "document_id": "Pin the inspected subject-containing document.",
+          "sample_all_layers": "Optional boolean, default false. It affects the autoCutout fallback only; the first DOM selectSubject() attempt does not receive that argument.",
+          "subject_target": "The active layer is the target; use the existing exact-name selector when the intended layer is not already active. No per-object id, cloud/device preference, or selection model parameter is exposed."
+        },
+        "limits": [
+          "The tool creates a pixel selection, not a mask and not the complete Select and Mask workspace.",
+          "Handler checks Photoshop23+ when detected information is available. A version/capability flag does not establish successful subject detection or cloud account/network availability.",
+          "The snippet tries DOM doc.selection.selectSubject(), then Action Manager autoCutout, and verifies that some selection exists. That does not establish that the requested subject or every thin detail was selected correctly.",
+          "Photoshop's interactive Object Selection, Refine Edge Brush, and Cloud/Device preference controls are not exposed by this tool. Do not equate sample_all_layers with any of those controls."
+        ],
+        "server_contract_notes": [
+          "Use for an ordinary principal-subject selection needed for a permitted local edit, after capabilities/state discovery and with visual inspection.",
+          "For remove-background/cut-out/isolate/transparent-background intent, this atomic tool is expressly forbidden by initialize instructions. Use the dedicated recipe exactly once after one get_state, then one preview and stop.",
+          "The handler internally calls connection.ping(); this implementation detail is distinct from the host's once-per-session photoshop_ping bootstrap and is not a reason for the agent to add repeated ping calls."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json: photoshop_select_subject schema exposes only sample_all_layers plus document_id.",
+          "photoshop-mcp/src/tools/selection-tools.ts:333-354,786-825: selection-only description, version check, fallback argument, parsed result.",
+          "photoshop-mcp/src/api/extendscript.ts:2960-3009: DOM selectSubject and autoCutout fallback, selection-existence check.",
+          "photoshop-mcp/src/prompts/instructions.ts: background-removal hard rule and AI-capability discovery requirement."
+        ]
+      },
+      "runtime": {
+        "status": "historical_report_not_reproduced_here",
+        "reported_status": "executed_partial_visual_check",
+        "reported_checked_on": "2026-11-09",
+        "reported_environment": {
+          "photoshop": "27.11.0",
+          "mcp": "1.7.37",
+          "commit": "ba36d8f2a28ecc56686568f3c0191e388336d498"
+        },
+        "observations": [
+          "Select Subject produced non-empty bounds; a selected-area Curves adjustment and mask were created on the photo copy.",
+          "Overall product remains readable."
+        ],
+        "limits": [
+          "1200px preview cannot establish spoke/gap/foliage boundary accuracy of the1920px source. Fine edges are explicitly not validated.",
+          "Historical development summary only. Raw logs, local paths and fixture files are not distributed; installation does not run or certify this operation."
+        ]
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "refine-selection-edges",
+      "title": "Refine soft and contaminated selection edges",
+      "theme": "selections",
+      "problem": "Improve a selection whose soft edges retain background fringes or omit fine subject detail.",
+      "when_to_use": [
+        "Close inspection reveals missing hair, foliage, fabric edges, or visible background contamination.",
+        "The target will be composited against a background that makes those defects noticeable."
+      ],
+      "avoid": [
+        "Do not refine an already adequate selection merely because the command exists.",
+        "Do not shrink an entire mask aggressively to conceal a few local errors.",
+        "Do not bypass the server's remove-background stop/error contract with this tutorial."
+      ],
+      "preconditions": [
+        "Start with a relevant selection or editable mask and identify the intended target layer.",
+        "Confirm which refinement controls the current MCP actually exposes; a Photoshop UI brush is not automatically an MCP capability."
+      ],
+      "limits": [
+        "Radius, edge shift, and brush-based edge inspection solve different problems.",
+        "Global changes may damage correct hard edges while improving a different soft edge.",
+        "No MCP execution or video-frame analysis is claimed by this research card."
+      ],
+      "essential_steps": [
+        "Evaluate the initial selection using an overlay color that contrasts with the subject and a preview over the intended composite.",
+        "Adjust edge detection only where the soft transition requires it.",
+        "Use edge shift for observed fringes and local add/subtract corrections for localized mistakes.",
+        "Where available, apply an edge-refinement brush only over the defective soft boundaries.",
+        "Retain an editable layer-mask output when the verified route supports it."
+      ],
+      "adapt_parameters": [
+        "Adapt radius to the pixel scale of the soft boundary, not the full canvas size.",
+        "Choose edge shift conservatively from the visible fringe width.",
+        "Use local brush sizes that distinguish the defect from nearby correct detail."
+      ],
+      "visual_check": [
+        "Inspect the edge at close view and at intended viewing size over the destination background.",
+        "Look for halos, missing fine details, hard cutouts, and accidental holes.",
+        "Compare against the source to ensure preserved details remain credible."
+      ],
+      "library_recommendations": [
+        "The conservative parameter and accept/reject checks are library guidance; the source documents available Photoshop refinement concepts."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/make-precise-selections-in-select-mask",
+        "title": "How to refine a selection with Select and Mask",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Read accessible transcript and written summary, including overlays, Radius/Smart Radius, Shift Edge, local tools, Refine Hair, Refine Edge Brush, and layer-mask output; video not played.",
+        "sections_read": [
+          "Viewing and evaluating selections with overlays",
+          "Using edge detection and global refinements",
+          "Refining soft edges with selection tools",
+          "Outputting the refined selection as a layer mask"
+        ],
+        "supplemental_sources": [
+          {
+            "url": "https://www.adobe.com/learn/photoshop/web/select-hair",
+            "title": "Select hair like a pro",
+            "content_read": "written_steps",
+            "coverage": "Read article's initial selection, view modes, Refine Edge Brush, corrections, and layer-mask output."
+          }
+        ]
+      },
+      "documented_by_adobe": true,
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "mcp_tools": [],
+      "test_status": "not_run",
+      "mcp": {
+        "feasibility": "partial_native_global_modifiers_only",
+        "tools": [
+          "photoshop_expand_selection",
+          "photoshop_contract_selection",
+          "photoshop_feather_selection",
+          "photoshop_get_selection_bounds",
+          "photoshop_get_preview",
+          "photoshop_execute_script"
+        ],
+        "parameters": {
+          "document_id": "Pin the document containing the inspected active selection.",
+          "pixels": "Expand, contract, or feather require a finite pixel value >=1; handlers round to a minimum integer1. These are absolute selection modifiers, not the tutorial's percent Shift Edge setting.",
+          "script": "Only for a missing operation with a scoped, independently checked implementation; this mapping supplies no tested Refine Edge Brush or Select and Mask script."
+        },
+        "limits": [
+          "No atomic refine_selection, Select and Mask workspace, Refine Edge Brush, Refine Hair, Smart Radius, Color/Object Aware mode, Decontaminate Colors, or interactive mask-view controls appear in this live catalog.",
+          "Expand/contract/feather globally change the existing selection. They do not classify hair/foliage edges, replace a local refinement brush, or preserve every currently correct edge automatically.",
+          "The tutorial's selection-to-layer-mask output can use create_layer_mask for a suitable ordinary masking intent, but that operation is a separate card and does not prove the refinement itself is equivalent.",
+          "If the image needs edge classification or local brush correction unavailable through verified MCP controls, report the partial capability or use a permitted, separately verified script/manual route. Do not invent a native refinement tool."
+        ],
+        "server_contract_notes": [
+          "Read state before action, inspect the actual edge defect, then choose only the modifier required. A global contraction must not be a default response to one local fringe.",
+          "Do not use refinement atomics or scripts to continue an explicit background-removal intent after its strict recipe workflow has stopped or failed.",
+          "A successful edge-modifier response is runtime evidence only. Close visual inspection of the important edge is required before recording the partial workflow as visually validated."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json: expand/contract/feather tools present; no Refine Edge Brush, Refine Hair, or full Select and Mask atomic tool among128 names.",
+          "photoshop-mcp/src/tools/selection-tools.ts:37-41,105-166,450-535: pixel rounding and selection-modifier schema/handlers.",
+          "photoshop-mcp/src/api/extendscript.ts:297-304,2745-2850: Action Manager Expand/Contract/Feather operations, without edge classification.",
+          "photoshop-mcp/src/prompts/instructions.ts: background-removal exception and preview verification contract."
+        ]
+      },
+      "runtime": {
+        "status": "not_run",
+        "checked_on": "2026-11-09",
+        "reason": "Not executed in the initial development batch; no runtime validation is bundled."
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "editable-layer-masks",
+      "title": "Hide and reveal content with an editable layer mask",
+      "theme": "masks",
+      "problem": "Control which parts of a layer remain visible while keeping the original image content recoverable.",
+      "when_to_use": [
+        "The requested composite or local edit needs some content hidden and other content retained.",
+        "The boundary may need correction after the first attempt."
+      ],
+      "avoid": [
+        "Do not paint on image pixels when the intention is to edit a mask.",
+        "Do not introduce a mask for an unrelated whole-image operation.",
+        "For an explicit remove-background request, preserve the server's prescribed recipe workflow."
+      ],
+      "preconditions": [
+        "Identify the target layer and meaningful underlying content or transparency.",
+        "Use a verified MCP route that can address the mask separately from image pixels."
+      ],
+      "limits": [
+        "White reveals, black conceals, and gray produces partial visibility; this does not change the underlying source pixels.",
+        "A mask alone does not correct incompatible lighting, perspective, scale, or missing source detail.",
+        "The tutorial's brush values are image-specific examples, not defaults for other files."
+      ],
+      "essential_steps": [
+        "Add an appropriate editable mask to the target layer.",
+        "Ensure the mask, rather than the image thumbnail, is the active editing target.",
+        "Place black on mask areas to conceal and white to restore; use gray only for intentional partial visibility.",
+        "Inspect the mask and composite, then correct a mistaken concealed area by restoring white."
+      ],
+      "adapt_parameters": [
+        "Adapt brush or mask-region size to the detail being edited.",
+        "Match boundary hardness and transition width to the source edge.",
+        "Use opacity for deliberate partial blending instead of unintentionally weakening the subject."
+      ],
+      "visual_check": [
+        "Inspect the mask itself and the rendered composite.",
+        "Confirm the source content can be restored and that no image pixels were painted over accidentally.",
+        "Check halos and visibility around critical subject details."
+      ],
+      "library_recommendations": [
+        "Compatibility checks and the choice to keep a small edit small are local library guidance, independent of Adobe's example composition."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/combine-image-layer-mask",
+        "title": "How to combine images with a layer mask",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Read accessible transcript and What you learned, including adding a white mask, targeting it, hiding with black, restoring with white, and inspecting it. Video not played.",
+        "sections_read": [
+          "Understanding the image setup and layer mask basics",
+          "Creating a layer mask on the top layer",
+          "Painting with black to hide areas and reveal the background",
+          "Fixing mistakes by painting with white and viewing the mask"
+        ],
+        "supplemental_sources": []
+      },
+      "documented_by_adobe": true,
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "mcp_tools": [],
+      "test_status": "historical_report_not_reproduced_here",
+      "mcp": {
+        "feasibility": "partial_native_mask_creation_not_interactive_painting",
+        "tools": [
+          "photoshop_create_layer_mask",
+          "photoshop_select_all",
+          "photoshop_select_rectangle",
+          "photoshop_select_ellipse",
+          "photoshop_get_layers",
+          "photoshop_get_preview",
+          "photoshop_execute_script"
+        ],
+        "parameters": {
+          "document_id": "Pin the inspected target document and ensure the intended layer is active.",
+          "create_mask": "No mask-mode, layer-name, brush, opacity, hardness, target-channel, or paint coordinates are exposed by create_layer_mask.",
+          "selection": "For the advertised selection-based route, make the desired selection using supported tools; select_all represents an intentional reveal-all area. Existing masks are not replaced by this create operation."
+        },
+        "limits": [
+          "Native create_layer_mask supports a mask from the current selection. Its snippet also creates revealAll when no selection exists, even though the tool description states that a selection is a precondition.",
+          "If a mask already exists, the snippet returns maskCreated:false and performs no update. The handler discards the snippet's returned status and still prints 'Layer mask created from selection'. Verify actual layer/mask state rather than relying on that text.",
+          "The live128-tool surface has no atomic manual paint-on-mask brush with stroke points, brush hardness, or opacity. A selected-region mask fill would need a permitted, verified scoped script; it is not a native painting equivalent.",
+          "photoshop_apply_layer_mask bakes/deletes concealed pixels and removes editability. It is not a step in this editable-mask technique.",
+          "Do not automatically delete an existing mask or rasterize a layer to force a new mask. Preserve useful current work and choose an appropriate scoped operation.",
+          "get_layers returns a flattened name/kind/visibility/opacity/blend-mode listing without mask-presence metadata. It cannot independently prove a mask exists; use permitted targeted structural inspection or an appropriate saved artifact, plus visual evidence."
+        ],
+        "server_contract_notes": [
+          "Ordinary masks for compositing/local edits are distinct from explicit remove-background intent, where create_layer_mask and execute_script are forbidden and the dedicated recipe sequence must stop after preview.",
+          "A scripted mask operation must explicitly target the mask channel rather than image pixels, have no matching native operation, and be verified on a disposable copy before promotion.",
+          "A generic test helper may read state before ordinary mutations; it must not add extra get_state calls inside the strict state -> background-removal recipe -> preview sequence."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json: create_layer_mask schema has document_id only; no paint-mask brush tool.",
+          "photoshop-mcp/src/tools/selection-tools.ts:288-310,703-727: advertised selection precondition and handler's unconditional creation confirmation.",
+          "photoshop-mcp/src/api/extendscript.ts:3039-3070: existing-mask no-op; revealSelection versus revealAll behavior.",
+          "photoshop-mcp/src/tools/selection-tools.ts:316-330: apply_layer_mask explicitly destroys hidden pixels and removes the mask.",
+          "photoshop-mcp/src/api/extendscript.ts:1629-1677: getLayerNames provides no mask-presence field.",
+          "photoshop-mcp/src/prompts/instructions.ts: strict background-removal forbidden operations."
+        ]
+      },
+      "runtime": {
+        "status": "historical_report_not_reproduced_here",
+        "reported_status": "validated_creation_fixture_only",
+        "reported_checked_on": "2026-11-09",
+        "reported_environment": {
+          "photoshop": "27.11.0",
+          "mcp": "1.7.37",
+          "commit": "ba36d8f2a28ecc56686568f3c0191e388336d498"
+        },
+        "observations": [
+          "Preview contains only the selected red rectangle; hasUserMask:true was separately confirmed."
+        ],
+        "limits": [
+          "Manual brush painting, fine edges and repeated create-mask no-op cases were not tested.",
+          "Historical development summary only. Raw logs, local paths and fixture files are not distributed; installation does not run or certify this operation."
+        ]
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "gradient-mask-blend",
+      "title": "Create a gradual transition on a layer mask",
+      "theme": "masks",
+      "problem": "Blend overlapping image regions with a controllable transition instead of a hard seam.",
+      "when_to_use": [
+        "A soft transition contributes to the requested composite or fade.",
+        "The image overlap contains compatible content that can tolerate partial transparency."
+      ],
+      "avoid": [
+        "Do not fade across an important object merely to conceal poor placement.",
+        "Do not use gradient blending as a substitute for a precise object boundary.",
+        "Do not assume every multi-image layout needs a blended seam."
+      ],
+      "preconditions": [
+        "Place the participating images on separate layers with sufficient overlap.",
+        "Identify which image must remain visible at each end and select the correct mask."
+      ],
+      "limits": [
+        "The gradient changes visibility, not the photographs' perspective or lighting.",
+        "Both images remain partly visible in the gray transition, so unwanted double contours are possible.",
+        "The gradient recipe's supported geometry and mask behavior require separate MCP verification."
+      ],
+      "essential_steps": [
+        "Create an editable mask on the layer that will fade.",
+        "Apply a white-to-black or black-to-white gradient on that mask with the intended visibility direction.",
+        "Adjust the line position, direction, and length until the transition supports the composition.",
+        "Where the verified tools permit, restore important details locally with white or conceal conflicting overlap with black."
+      ],
+      "adapt_parameters": [
+        "Adapt gradient endpoints to image overlap and the location of critical features.",
+        "Shorten or lengthen the transition from the visible seam quality.",
+        "Choose the gradient direction from which source should dominate each region."
+      ],
+      "visual_check": [
+        "Inspect the grayscale mask and the final overlap.",
+        "Look for doubled objects, ghosted edges, obvious tonal bands, or transparency through a subject.",
+        "Judge the transition at intended viewing size as well as close view."
+      ],
+      "library_recommendations": [
+        "The fit-to-purpose, overlap, and ghosting checks are library decision criteria rather than a universal Adobe design rule."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/layer-mask",
+        "title": "How to gradually blend images with a layer mask",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Read accessible transcript and written summary through gradient placement, mask inspection, and white-brush refinement. Video not played.",
+        "sections_read": [
+          "Understanding the layer setup and blending goal",
+          "Adding a layer mask to the top layer",
+          "Applying a black-to-white gradient on the mask",
+          "Viewing and understanding the gradient mask effect",
+          "Refining the gradient mask by painting with the Brush tool"
+        ],
+        "supplemental_sources": [
+          {
+            "url": "https://www.adobe.com/learn/photoshop/web/blend-two-images-gradient",
+            "title": "Combine images with a smooth transition",
+            "content_read": "transcript",
+            "coverage": "Read accessible introduction and available explanatory sections; used as supplementary confirmation, not a separate fully analyzed video."
+          }
+        ]
+      },
+      "documented_by_adobe": true,
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "mcp_tools": [],
+      "test_status": "historical_report_not_reproduced_here",
+      "mcp": {
+        "feasibility": "native_linear_gradient_with_preservation_and_targeting_limits",
+        "tools": [
+          "photoshop_recipe_gradient_fade",
+          "photoshop_apply_gradient_mask",
+          "photoshop_get_layers",
+          "photoshop_get_preview"
+        ],
+        "parameters": {
+          "document_id": "Pin the intended document and active fading layer.",
+          "direction": "top_to_bottom, bottom_to_top, left_to_right, or right_to_left; actual endpoints follow this axis. Default bottom_to_top.",
+          "start_pct_end_pct": "Integers0–100 after handler clamping/rounding, measured along the document width/height, not the selected layer's bounds. Avoid identical endpoints.",
+          "angle_deg": "Advertised but not applied to the gradient geometry in the inspected implementation. It is calculated and returned as metadata only; do not claim arbitrary-angle support."
+        },
+        "limits": [
+          "Prefer the recipe for the requested multi-step fade outcome; it creates a mask if absent and wraps the change in one history state. The atomic route can auto-create a mask through a two-step retry path.",
+          "The gradient helper uses Normal blending with fully opaque stops. It writes a new grayscale gradient over the affected mask area, rather than multiplying it with an existing subject-isolation mask. Existing mask detail is therefore not preserved by design; active selection/channel behavior needs runtime inspection.",
+          "Neither route deselects before filling. An active selection can constrain the gradient, so inspect and intentionally manage it before executing a permitted fade.",
+          "The mask-channel selection helper uses channel ordinal target instead of explicitly identifying the mask channel. From source alone, mask-only targeting cannot be guaranteed for every prior channel state; test a pre-existing mask with RGB active and confirm image pixels remain untouched.",
+          "No radial gradient or arbitrary endpoint-pair parameters are exposed by these two tools. Do not substitute a Gradient Fill layer for the Adobe mask technique."
+        ],
+        "server_contract_notes": [
+          "The recipe description requires an isolated subject for a subject fade and suggests removal first; do not add background removal to a simple unrelated fade without the user's intent. When explicit background removal is the request, its strict sequence stops after preview rather than continuing into this recipe.",
+          "If preserving the existing subject mask is necessary, do not run this normal-opacity gradient over it as a safe default. Consider a separate group mask only through a permitted and separately verified missing-operation script, or state the limit.",
+          "Record actual gradient direction and observed visibility. The returned angle value alone is not evidence that the requested angle was rendered."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json: gradient recipe/atomic schemas and four direction enums.",
+          "photoshop-mcp/src/tools/recipes/gradient-fade.ts:76-132: angle calculated, axis endpoints used, existing mask reused, no deselect, history state.",
+          "photoshop-mcp/src/tools/recipes/_shared.ts:341-360: axis-only endpoint mapping.",
+          "photoshop-mcp/src/api/extendscript.ts:918-925,948-990: current-channel selector, Normal gradient blend, opaque stops, linear fill.",
+          "photoshop-mcp/src/api/extendscript.ts:3075-3130: atomic gradient endpoints, angle reported only, component-channel restore.",
+          "photoshop-mcp/src/tools/mask-tools.ts:205-268: atomic retry creating a missing mask."
+        ],
+        "runtime_gates": [
+          "Do not use the recipe/atomic gradient on an existing mask with RGB active.",
+          "When replacement of the mask is intended, first run the tested explicit-mask-channel snippet with pinned document_id, then use the recipe.",
+          "For preserving an existing isolation mask, a separate verified combination workflow is still required."
+        ]
+      },
+      "runtime": {
+        "status": "historical_report_not_reproduced_here",
+        "reported_status": "conditional_validation_with_confirmed_unsafe_case",
+        "reported_checked_on": "2026-11-09",
+        "reported_environment": {
+          "photoshop": "27.11.0",
+          "mcp": "1.7.37",
+          "commit": "ba36d8f2a28ecc56686568f3c0191e388336d498"
+        },
+        "observations": [
+          "Fresh reveal-all mask: left_to_right20–80 hides left and reveals right; actual mask exists.",
+          "Existing mask+RGB: recipe painted RGB to black/white while preserving the rectangular mask, confirmed visually in case11.",
+          "Explicit mask-channel selection before the recipe produced the intended color fade in case12."
+        ],
+        "limits": [
+          "Only left_to_right was tested; arbitrary angles are not implemented.",
+          "Gradient replaces existing mask values; it does not intersect with subject isolation.",
+          "Historical development summary only. Raw logs, local paths and fixture files are not distributed; installation does not run or certify this operation."
+        ],
+        "runtime_gates": [
+          "Do not use the recipe/atomic gradient on an existing mask with RGB active.",
+          "When replacement of the mask is intended, first run the tested explicit-mask-channel snippet with pinned document_id, then use the recipe.",
+          "For preserving an existing isolation mask, a separate verified combination workflow is still required."
+        ],
+        "verified_script": "references/verified-scripts/select-layer-mask.jsx"
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "organize-layer-groups",
+      "title": "Organize related layers into meaningful groups",
+      "theme": "layers",
+      "problem": "Make a layered document easier to target and maintain without flattening its editable elements.",
+      "when_to_use": [
+        "Several layers represent one logical component and need coordinated management.",
+        "Layer names or structure make reliable future targeting difficult."
+      ],
+      "avoid": [
+        "Do not reorganize a user's document merely to perform a small unrelated edit.",
+        "Do not merge or flatten layers as a substitute for grouping.",
+        "Do not rename or move unrelated components outside the current task."
+      ],
+      "preconditions": [
+        "Inspect existing layer names, order, relationships, and document appearance.",
+        "Determine the smallest set of related layers that actually benefits from grouping."
+      ],
+      "limits": [
+        "A group is an organizational container; it does not by itself validate the design.",
+        "Moving a layer or group can alter stacking relationships, so the rendered result must be compared.",
+        "The tutorial teaches manual grouping, while an MCP organize recipe may implement its own naming and grouping rules."
+      ],
+      "essential_steps": [
+        "Select the related layers while preserving their internal order.",
+        "Create one meaningful group and name it according to its content or role.",
+        "Move additional related layers into it only where appropriate.",
+        "Address the group for coordinated visibility or movement; enter the group when editing an individual member."
+      ],
+      "adapt_parameters": [
+        "Adapt group boundaries to the document's real semantic components.",
+        "Use names that remain understandable in later turns.",
+        "Keep nesting shallow unless distinct components require it; this is a library convention, not an Adobe requirement."
+      ],
+      "visual_check": [
+        "Compare before and after previews; pure organization should retain the intended appearance.",
+        "Confirm all intended members are present in the correct order and unrelated layers remain outside.",
+        "Verify that targeting one member is still possible and that coordinated group controls affect only the expected content."
+      ],
+      "library_recommendations": [
+        "The minimal scope, conservative nesting, and appearance comparison are local library guidance."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/organize-layers-with-layer-groups",
+        "title": "Tip: Organize your layers with layer groups",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Read full accessible transcript and summary from selecting related layers to creating, naming, adding members, visibility, and moving grouped versus individual content. Video not played.",
+        "sections_read": [
+          "Understanding the purpose of layer organization",
+          "Creating and naming layer groups",
+          "Managing and moving grouped layers"
+        ],
+        "supplemental_sources": [
+          {
+            "url": "https://helpx.adobe.com/uk/photoshop/desktop/create-manage-layers/transform-manipulate-layers/group-and-ungroup-layers.html",
+            "title": "Group and ungroup layers",
+            "content_read": "article_text",
+            "coverage": "Read grouping, ungrouping, and adding layers to groups."
+          }
+        ]
+      },
+      "documented_by_adobe": true,
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "mcp_tools": [],
+      "test_status": "historical_report_not_reproduced_here",
+      "mcp": {
+        "feasibility": "partial_native_recipe_not_semantic_grouping",
+        "tools": [
+          "photoshop_recipe_organize_layers",
+          "photoshop_rename_layer",
+          "photoshop_get_layers",
+          "photoshop_select_layer_by_name",
+          "photoshop_execute_script",
+          "photoshop_get_preview"
+        ],
+        "parameters": {
+          "document_id": "Pin the inspected target document.",
+          "naming_scheme": "type_index, content_summary, or preserve. content_summary uses the text content for text-layer slugs; it does not recognize image semantics.",
+          "auto_group": "Default true. Set false for a rename-only organization that must preserve existing interleaving; still verify the result.",
+          "rename_name": "For one requested rename, select the intended layer and use photoshop_rename_layer with name; duplicate names make future first-match targeting ambiguous."
+        },
+        "limits": [
+          "The recipe operates on top-level non-group layers and skips existing LayerSets. It is not recursive semantic organization of an existing complex document.",
+          "When auto_group is true it creates new kind-based groups and moves layers into them. It does not explicitly restore cross-kind interleaving, clipping chains, or adjustment scope. The tool description's promise that visual output stays identical is not established by this implementation and needs image comparison.",
+          "Move failures inside auto-grouping are caught and ignored, while group_count can still report created groups. Counts are not proof that every expected layer was moved.",
+          "There is no native create-group/group-selected-layers/move-layer-into-group tool in this live catalog. Exact semantic grouping needs a permitted, scoped script for the missing operation or a manual route; no script has been validated by this mapping.",
+          "A rename-only recipe avoids the recipe's reordering step but does not satisfy a request to create meaningful component groups by itself.",
+          "get_layers flattens the recursive listing without parent ids or clipping membership. A successful group count plus this list cannot prove the preserved semantic tree or adjustment scope."
+        ],
+        "server_contract_notes": [
+          "Prefer the existing recipe only when its actual naming and kind-grouping behavior fits the requested outcome. Do not reorganize unrelated content for a small edit.",
+          "Use atomic rename for a single name change. Use execute_script only for the truly missing semantic-group operation, and preserve original order/relationships with scoped visual verification.",
+          "Before/after preview comparison is required; do not accept a success count or the recipe description as evidence of unchanged appearance."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json: recipe properties, rename/name-selector tools, and absence of semantic group atomics.",
+          "photoshop-mcp/src/tools/recipes/organize-layers.ts:55-65: collects top-level non-LayerSet layers only.",
+          "photoshop-mcp/src/tools/recipes/organize-layers.ts:67-127: kind-based classification and naming, text slug behavior.",
+          "photoshop-mcp/src/tools/recipes/organize-layers.ts:129-145: creates groups and moves kind-matched layers, ignores move exceptions.",
+          "photoshop-mcp/src/api/extendscript.ts:1629-1677: flattened recursive layer listing without parent or grouped fields.",
+          "photoshop-mcp/src/tools/layer-tools.ts:229-242: exact-name recursive depth-first matching, first duplicate wins."
+        ]
+      },
+      "runtime": {
+        "status": "historical_report_not_reproduced_here",
+        "reported_status": "validated_simple_fixture_only",
+        "reported_checked_on": "2026-11-09",
+        "reported_environment": {
+          "photoshop": "27.11.0",
+          "mcp": "1.7.37",
+          "commit": "ba36d8f2a28ecc56686568f3c0191e388336d498"
+        },
+        "observations": [
+          "Image and live-text layers were placed in Images/Text groups; layer-set structure inspected.",
+          "Before/after organization previews have identical pixels."
+        ],
+        "limits": [
+          "No guarantee for interleaved, clipped, blended or semantically organized production layers.",
+          "Historical development summary only. Raw logs, local paths and fixture files are not distributed; installation does not run or certify this operation."
+        ]
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "clipping-masks",
+      "title": "Limit a layer or adjustment with a clipping mask",
+      "theme": "layers",
+      "problem": "Restrict an upper layer's visible contribution or adjustment to the content of a specific base layer.",
+      "when_to_use": [
+        "An adjustment should affect one composited object without altering the surrounding image.",
+        "An image or effect should appear within the visible content of a shape or text layer."
+      ],
+      "avoid": [
+        "Do not clip when the desired adjustment should affect all layers beneath it.",
+        "Do not treat a clipping mask as identical to a painted layer mask.",
+        "Do not alter an existing clipping chain without understanding its base and members."
+      ],
+      "preconditions": [
+        "Identify the base layer and the upper layer to restrict.",
+        "Arrange them consecutively in the intended order and inspect the base's transparency."
+      ],
+      "limits": [
+        "A base layer's opaque content reveals the clipped content; transparent areas hide it.",
+        "Additional clipped layers must remain consecutive, and moving layers into a chain can change its membership.",
+        "Clipping does not repair inaccurate transparency already present in the base layer."
+      ],
+      "essential_steps": [
+        "Place the intended adjustment or image immediately above its base.",
+        "Create the clipping relationship using the verified supported command.",
+        "Change only the parameters needed for the requested result.",
+        "Release the clipping relationship only when its broader effect is intended."
+      ],
+      "adapt_parameters": [
+        "Adapt the base choice to which object should receive the edit.",
+        "Tune the adjustment amount independently of the clipping relationship.",
+        "Inspect chain membership and layer order after any reordering."
+      ],
+      "visual_check": [
+        "Check the Layers panel for the expected clipping indication and base relationship.",
+        "Compare the object's change against adjacent content that should remain untouched.",
+        "Inspect semitransparent edges and test that removing or hiding the adjustment restores the expected previous appearance."
+      ],
+      "library_recommendations": [
+        "The scoped edit and edge checks are library guidance; Adobe documents the clipping relationship and adjustment-layer behavior."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/adjustment-layer",
+        "title": "Fine-tune an image adjustment layer",
+        "checked_on": "2026-11-09",
+        "content_read": "written_steps",
+        "coverage": "Read complete article on clipping an adjustment to the layer below and controlling local adjustment strength with masks.",
+        "sections_read": [
+          "Control which layers are affected by your adjustment layer",
+          "Make an adjustment to selective parts of an image",
+          "Vary your adjustments"
+        ],
+        "supplemental_sources": [
+          {
+            "url": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/create-and-manage-clipping-masks.html",
+            "title": "Create and manage clipping masks",
+            "content_read": "article_text",
+            "coverage": "Read the complete desktop article: base transparency, consecutive chain membership, creation, release, and blend-group note."
+          }
+        ]
+      },
+      "documented_by_adobe": true,
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "mcp_tools": [],
+      "test_status": "historical_report_not_reproduced_here",
+      "mcp": {
+        "feasibility": "native_clipping_create_and_release",
+        "tools": [
+          "photoshop_create_clipping_mask",
+          "photoshop_release_clipping_mask",
+          "photoshop_get_layers",
+          "photoshop_select_layer_by_name",
+          "photoshop_move_layer_to_position",
+          "photoshop_get_preview"
+        ],
+        "parameters": {
+          "document_id": "Pin the target document.",
+          "layer_name": "Optional exact name for recursive lookup on create/release; omit only if inspected active layer is definitely the intended upper layer.",
+          "layer_relationship": "The upper layer must sit directly above its base in the same parent stack. No independent base_layer_id/base_layer_name parameter is exposed.",
+          "reorder_if_needed": "photoshop_move_layer_to_position accepts targetLayerName and position ABOVE, BELOW, TOP, BOTTOM. Reordering can alter rendering and must be scoped deliberately."
+        },
+        "limits": [
+          "The create tool checks that a layer exists directly below and then invokes Action Manager groupEvent. It does not assess whether that base's visible pixels are the correct boundary for the request.",
+          "A layer already grouped returns success with already_clipping:true. This does not verify that its existing base relationship is the one requested.",
+          "Release sets layer.grouped=false. For a multi-layer chain, inspect the resulting chain and rendering rather than assuming every other relationship stayed unchanged.",
+          "Clipping controls scope/visibility; the adjustment value or image positioning still requires a separate actual tool. Do not map an unsupported editable adjustment to a destructive atomic operation simply because clipping itself is native.",
+          "Bottom-most target returns no_base_layer_below; a non-clipped release returns not_clipping. Follow the structured envelope and inspect the stack before a bounded correction.",
+          "get_layers does not expose layer.grouped or parent relationships, so it does not prove the clipping chain on its own. Confirm the create/release result, permitted targeted structural metadata, and the visual scope together."
+        ],
+        "server_contract_notes": [
+          "Inspect state/layers and pin document_id; name collisions must be resolved by actual structure rather than guessed matching.",
+          "Use native create/release for this precise operation; no execute_script is needed when these tools cover it.",
+          "Verify expected clipped-layer indication/base, the unchanged neighboring content, and mask-edge rendering before recording visual validation."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json: create/release schemas, optional layer_name, document_id, and reorder properties.",
+          "photoshop-mcp/src/tools/mask-tools.ts:131-202: native create/release schemas and structured snippet parsing.",
+          "photoshop-mcp/src/api/extendscript.ts:1000-1020: finds the directly lower layer in the same parent container.",
+          "photoshop-mcp/src/api/extendscript.ts:3160-3216: optional layer activation, no-base check, already-clipped result, Action Manager creation.",
+          "photoshop-mcp/src/api/extendscript.ts:3220-3276: grouped-state check and release via layer.grouped=false."
+        ]
+      },
+      "runtime": {
+        "status": "historical_report_not_reproduced_here",
+        "reported_status": "validated_mechanism_partial_fill",
+        "reported_checked_on": "2026-11-09",
+        "reported_environment": {
+          "photoshop": "27.11.0",
+          "mcp": "1.7.37",
+          "commit": "ba36d8f2a28ecc56686568f3c0191e388336d498"
+        },
+        "observations": [
+          "Placed photo remains a Smart Object with grouped:true above a base with hasUserMask:true.",
+          "Photo pixels appear only in the rectangular base region."
+        ],
+        "limits": [
+          "Photo was500px high and did not cover the lower120px of the base; red base remains there. This validates clipping mechanics, not a completed fill/mockup. Fit scale/placement before final compositing.",
+          "Historical development summary only. Raw logs, local paths and fixture files are not distributed; installation does not run or certify this operation."
+        ]
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "curves-adjustment-layer",
+      "title": "Correct tonal ranges with an editable Curves layer",
+      "theme": "color",
+      "problem": "A photograph has weak contrast or poorly separated shadows, midtones, and highlights.",
+      "when_to_use": [
+        "Use when a simpler exposure adjustment cannot isolate the tonal range needing correction.",
+        "Use channel curves only when a specific color cast also needs correction."
+      ],
+      "avoid": [
+        "Do not apply a stylized S-curve automatically to a resize or export request.",
+        "Avoid forcing contrast when it removes useful product detail."
+      ],
+      "preconditions": [
+        "Inspect image mode and histogram; the documented 0–255 coordinates describe RGB, not CMYK ink percentages.",
+        "Choose the intended image layer and adjustment scope."
+      ],
+      "limits": [
+        "Curves redistributes existing tones; it cannot recover detail already absent from the source.",
+        "One control point also influences neighboring tonal ranges."
+      ],
+      "essential_steps": [
+        "Add a Curves adjustment layer instead of applying Image > Adjustments directly.",
+        "Start with the composite RGB channel. Add a small number of control points in the tonal range requiring correction.",
+        "Raise a point to brighten that range or lower it to darken; refine other ranges only when needed.",
+        "Use the adjustment mask to restrict the correction, and reduce opacity if the result is excessive.",
+        "Keep the adjustment editable in the layered master."
+      ],
+      "adapt_parameters": [
+        "Choose control-point input/output coordinates from the actual image, not a universal preset.",
+        "Adapt channel, adjustment strength, opacity, and mask coverage."
+      ],
+      "visual_check": [
+        "Compare before/after at fit view and inspect important dark and bright detail at 100%.",
+        "Check neutral colors and clipping; a stronger curve is not automatically a better result."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/brighten-photo-basics",
+        "title": "Make an image brighter or darker",
+        "checked_on": "2026-11-09",
+        "content_read": "article_text",
+        "coverage": "Learn article documents adjustment-layer exposure correction and masks; desktop Help supplies Curves graph behavior.",
+        "secondary_urls": [
+          "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/adjust-color-and-tone-with-curves.html"
+        ],
+        "source_ids": [
+          "cr-learn-exposure",
+          "cr-help-curves"
+        ]
+      },
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "test_status": "historical_report_not_reproduced_here",
+      "editorial_note": "Applicability, avoidance, and visual acceptance criteria are practical synthesis. No universal numeric curve is prescribed. The suspect endpoint paragraph in the 2026 Help article is quarantined below.",
+      "synthesis_word_count": 224,
+      "mcp": {
+        "feasibility": "partial_native_editable_presets; custom_points_script_candidate_not_tested",
+        "tools": [
+          "photoshop_adjust_curves",
+          "photoshop_select_layer_by_name",
+          "photoshop_set_layer_opacity",
+          "photoshop_get_state",
+          "photoshop_get_layers",
+          "photoshop_get_preview",
+          "photoshop_execute_script"
+        ],
+        "parameters": {
+          "photoshop_adjust_curves": {
+            "preset": [
+              "neutral",
+              "auto_tone"
+            ],
+            "document_id": "positive target id"
+          },
+          "photoshop_set_layer_opacity": {
+            "opacity": "0–100; adapt to image",
+            "document_id": "positive target id"
+          },
+          "photoshop_execute_script": {
+            "code": "Reviewed self-contained JSX with explicit return; required only for a missing custom-point operation",
+            "timeout_ms": "1000–600000; omit unless justified",
+            "document_id": "positive target id"
+          },
+          "image_dependent": "Custom input/output points, channels, mask scope, and layer opacity are not native Curves parameters."
+        },
+        "limits": [
+          "Native Curves exposes only preset, not curve points, channel, or mask coordinates.",
+          "auto_tone is implemented as a fixed two-endpoint mapping (12,0) to (243,255), not an image-analyzed Auto Tone and not an S-curve with interior points. neutral uses (0,0) to (255,255).",
+          "The native operation creates an adjustment layer and preserves underlying pixels. It does not by itself limit the effect to one image layer.",
+          "A custom composite curve descriptor is structurally supported by inspected ActionDescriptor code, but changing its point list or channel is a script candidate until executed and visually inspected. Do not assume an internal __mcp helper is globally callable."
+        ],
+        "server_contract_notes": [
+          "Read photoshop_get_state; capture and pass a positive document_id; select the intended layer by exact unique name when needed; inspect photoshop_get_preview after the meaningful change. All current live schemas reject additional properties.",
+          "Prefer the native tool for its actual two presets. A request for custom points is not covered by that preset interface, so a scoped script may be considered and tested on a copy. Do not silently replace a precise request with auto_tone."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json (live 128 tools, server 1.7.37,2026-11-09)",
+          "photoshop-mcp/src/tools/adjustment-tools.ts:132–153 (preset-only schema)",
+          "photoshop-mcp/src/api/extendscript.ts:779–818 (actual two-point Curves descriptor)",
+          "photoshop-mcp/src/api/extendscript.ts:2386–2401 (creates adjustment layer)",
+          "photoshop-mcp/src/tools/action-tools.ts:38–74 (custom JSX escape hatch, explicit return)"
+        ]
+      },
+      "runtime": {
+        "status": "historical_report_not_reproduced_here",
+        "reported_status": "validated_native_preset_only",
+        "reported_checked_on": "2026-11-09",
+        "reported_environment": {
+          "photoshop": "27.11.0",
+          "mcp": "1.7.37",
+          "commit": "ba36d8f2a28ecc56686568f3c0191e388336d498"
+        },
+        "observations": [
+          "Before/after visual comparison shows stronger contrast; a live Curves layer and mask sit above untouched source pixels."
+        ],
+        "limits": [
+          "auto_tone is the fixed endpoint mapping, not adaptive analysis; custom points, local range tuning and neutral-reference matching were not validated.",
+          "Historical development summary only. Raw logs, local paths and fixture files are not distributed; installation does not run or certify this operation."
+        ]
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "neutralize-color-cast",
+      "title": "Neutralize an unwanted color cast, then refine tonal color balance",
+      "theme": "color",
+      "problem": "Lighting gives nominally neutral objects an unwanted blue, green, or warm cast.",
+      "when_to_use": [
+        "Use when faithful color is part of the requested result and a reliable neutral reference exists.",
+        "Use Color Balance for residual casts isolated to shadows, midtones, or highlights."
+      ],
+      "avoid": [
+        "Do not neutralize intentional sunset or colored lighting merely because it is not neutral.",
+        "Do not assume a colored object should be gray."
+      ],
+      "preconditions": [
+        "Identify a credible neutral patch and inspect the whole scene.",
+        "Confirm whether correction should affect one layer, a masked region, or the full image."
+      ],
+      "limits": [
+        "A gray-point correction depends on the sample location.",
+        "A global neutralization can be inadequate for mixed lighting."
+      ],
+      "essential_steps": [
+        "Add a Levels adjustment layer and use its gray eyedropper on a patch that should be neutral.",
+        "Compare alternative credible sample locations if the first correction looks wrong.",
+        "Lower adjustment opacity when neutralization is too strong.",
+        "If a residual tonal cast remains, add a Color Balance adjustment layer; inspect midtones first, then shadows and highlights.",
+        "Move complementary-color sliders only as required. Preserve Luminosity keeps the correction from unnecessarily changing brightness.",
+        "Keep masks and correction layers editable."
+      ],
+      "adapt_parameters": [
+        "Adapt sample position, tonal range, Cyan/Red, Magenta/Green, Yellow/Blue amounts, opacity, and mask.",
+        "Adobe documents Color Balance sliders from -100 to +100; these are bounds, not suggested starting values."
+      ],
+      "visual_check": [
+        "Check multiple neutral references and important material or skin colors before and after.",
+        "Reject a correction that makes the reference neutral while making the subject less credible."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/remove-unwanted-color-cast",
+        "title": "Correct an unwanted color cast",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Read full visible Learn transcript and written recap. Desktop Color Balance Help provides the optional tonal-range refinement.",
+        "secondary_urls": [
+          "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/apply-color-balance-and-photo-filter-adjustments.html"
+        ],
+        "source_ids": [
+          "cr-learn-color-cast",
+          "cr-help-color-balance"
+        ]
+      },
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "test_status": "not_run",
+      "editorial_note": "The two corrections are alternatives or a justified sequence, not mandatory stages on every image. Faithful-color acceptance is practical synthesis.",
+      "synthesis_word_count": 235,
+      "mcp": {
+        "feasibility": "documented_only_for_gray_eyedropper_and_color_balance; no_verified_exact_execution_path",
+        "tools": [
+          "photoshop_get_state",
+          "photoshop_get_preview",
+          "photoshop_select_layer_by_name",
+          "photoshop_set_layer_opacity"
+        ],
+        "parameters": {
+          "photoshop_set_layer_opacity": {
+            "opacity": "0–100 for an already existing correction layer",
+            "document_id": "positive target id"
+          },
+          "missing_native_controls": [
+            "Levels gray eyedropper or neutral-reference sampling",
+            "Color Balance adjustment creation and tonal sliders",
+            "preserve_luminosity for Color Balance"
+          ]
+        },
+        "limits": [
+          "No Color Balance or gray-eyedropper tool appears among the current128 advertised tools.",
+          "photoshop_auto_levels is available but performs a direct automatic pixel adjustment; it accepts neither a neutral sample nor an amount and rasterizes text/SmartObjects. It is not the Adobe neutral-reference workflow.",
+          "Exposure, Vibrance, global Hue/Saturation, and Curves presets are different operations, not substitutes for a promised Color Balance or gray-point correction.",
+          "Generic execute_script availability alone does not validate an editable Color Balance ActionManager descriptor. No such verified implementation was found in the inspected repository. A future script requires primary API evidence and a fixture test before being advertised as operational."
+        ],
+        "server_contract_notes": [
+          "Read photoshop_get_state; capture and pass a positive document_id; select the intended layer by exact unique name when needed; inspect photoshop_get_preview after the meaningful change. All current live schemas reject additional properties.",
+          "If the exact correction is necessary, report this gap or use a separately verified manual/script path. Do not invent photoshop_color_balance, a gray-point parameter on auto_levels, or an untested brush/sample function."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json (live 128 tools, server 1.7.37,2026-11-09)",
+          "photoshop-mcp/src/tools/adjustment-tools.ts:94–118 (Auto Levels without inputs; destructive side effects)",
+          "photoshop-mcp/src/api/extendscript.ts:2345–2360 (Auto Levels implementation)",
+          "photoshop-mcp/src/api/extendscript.ts:2275–2282 (comment distinguishes Color Balance from Hue/Saturation; not an editable Color Balance tool)",
+          "photoshop-mcp/src/tools/action-tools.ts:38–74 (generic JSX does not prove a specific descriptor)"
+        ]
+      },
+      "runtime": {
+        "status": "not_run",
+        "checked_on": "2026-11-09",
+        "reason": "Not executed in the initial development batch; no runtime validation is bundled."
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "targeted-hue-saturation",
+      "title": "Adjust a color range with Hue/Saturation and a spatial mask",
+      "theme": "color",
+      "problem": "One color is too dull, intense, or incorrectly hued while other colors should remain unchanged.",
+      "when_to_use": [
+        "Use when the requested correction is specific to a color or object.",
+        "Use a spatial mask when the same color appears elsewhere and should not change."
+      ],
+      "avoid": [
+        "Avoid global saturation increases that damage skin or product colors.",
+        "Do not recolor an authentic product unless that change is requested."
+      ],
+      "preconditions": [
+        "Identify the target color range and any protected areas.",
+        "Confirm whether the adjustment should be clipped to one image layer."
+      ],
+      "limits": [
+        "A chosen color range affects matching colors throughout the image; it does not identify an object.",
+        "Large hue or saturation changes can reveal color artifacts."
+      ],
+      "essential_steps": [
+        "Create a Hue/Saturation adjustment layer above the intended content.",
+        "Choose a color family or sample it with the targeted adjustment tool instead of leaving Master selected by habit.",
+        "Adjust only the requested properties: hue changes the color, saturation its intensity, and lightness its brightness.",
+        "For local changes, start with a black adjustment mask and reveal the correction with white only where required.",
+        "Clip the adjustment to the intended layer when other image layers must be protected.",
+        "Save the layered master with the adjustment intact."
+      ],
+      "adapt_parameters": [
+        "Adapt color range, hue shift, saturation, lightness, opacity, and mask transition.",
+        "Tutorial example values such as +60 saturation are specific to its practice image and are not defaults."
+      ],
+      "visual_check": [
+        "Compare the target and protected colors at fit view, then inspect edges and gradients at 100%.",
+        "Verify that skin, adjacent objects, and colors in other layers remain appropriate."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/make-colors-pop-in-photo",
+        "title": "Make colors pop in a photo",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Read visible desktop Learn transcript and written steps, including targeted colors and masks. Web adjustment tutorial independently documents clipping scope; its web UI is not an MCP procedure.",
+        "secondary_urls": [
+          "https://www.adobe.com/learn/photoshop/web/edit-photos-adjustment-layers"
+        ],
+        "source_ids": [
+          "cr-learn-color-pop",
+          "cr-learn-web-adjustments"
+        ]
+      },
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "test_status": "not_run",
+      "editorial_note": "Protected-color acceptance and avoiding unrequested product recoloring are practical selection criteria, not a claim that Adobe forbids recoloring.",
+      "synthesis_word_count": 247,
+      "mcp": {
+        "feasibility": "partial_native_destructive_global_HSL; editable_global_layer_script_candidate_not_tested; targeted_range_and_mask_editing_not_verified",
+        "tools": [
+          "photoshop_adjust_hue_saturation",
+          "photoshop_recipe_apply_color_grade",
+          "photoshop_create_clipping_mask",
+          "photoshop_set_layer_opacity",
+          "photoshop_get_state",
+          "photoshop_get_preview",
+          "photoshop_execute_script"
+        ],
+        "parameters": {
+          "photoshop_adjust_hue_saturation": {
+            "hue": "-180–180",
+            "saturation": "-100–100",
+            "lightness": "-100–100",
+            "document_id": "positive target id"
+          },
+          "photoshop_create_clipping_mask": {
+            "document_id": "positive target id"
+          },
+          "photoshop_execute_script": {
+            "code": "A self-contained editable global HSL adjustment descriptor can be derived from the inspected recipe helper, then tested on a copy",
+            "document_id": "positive target id"
+          },
+          "missing_native_controls": [
+            "Reds/Yellows/etc color-family range",
+            "on-image color sampling",
+            "new editable HSL adjustment with arbitrary values",
+            "brush painting on an existing adjustment mask"
+          ]
+        },
+        "limits": [
+          "The atomic HSL tool applies Image>Adjustments once to pixels, rasterizes text/SmartObjects, and resets non-Normal blend modes to Normal. It does not create an adjustment layer.",
+          "The color-grade recipe creates editable HSL+brightness/contrast layers but exposes only six style presets and applies globally. It is not suitable for a specific product-color edit.",
+          "An upstream recipe helper builds a global editable HSL layer using ActionDescriptor/ActionList; its code is an implementation reference for a scoped script, not a globally callable function.",
+          "A custom global HSL layer does not establish support for targeted color families or accurate spatial-mask painting. Both require independent implementation evidence and tests.",
+          "Vibrance is editable natively but cannot replace an exact hue change."
+        ],
+        "server_contract_notes": [
+          "Read photoshop_get_state; capture and pass a positive document_id; select the intended layer by exact unique name when needed; inspect photoshop_get_preview after the meaningful change. All current live schemas reject additional properties.",
+          "Prefer the recipe only when its actual global preset matches a requested stylistic grade. For exact targeted recoloring, preserve the gap instead of silently rasterizing or adding an unrelated grade."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json (live 128 tools, server 1.7.37,2026-11-09)",
+          "photoshop-mcp/src/tools/adjustment-tools.ts:58–89 (atomic HSL schema and declared rasterization)",
+          "photoshop-mcp/src/api/extendscript.ts:2282–2339 (rasterization, blend reset, global HStr descriptor)",
+          "photoshop-mcp/src/tools/recipes/_shared.ts:122–143 (editable global HSL descriptor helper)",
+          "photoshop-mcp/src/tools/recipes/apply-color-grade.ts:25–61 (fixed presets, global only)",
+          "photoshop-mcp/src/api/extendscript.ts:4308–4337 (Vibrance adjustment layer is different)"
+        ]
+      },
+      "runtime": {
+        "status": "not_run",
+        "checked_on": "2026-11-09",
+        "reason": "Not executed in the initial development batch; no runtime validation is bundled."
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "spot-heal-separate-layer",
+      "title": "Repair small blemishes on a separate retouch layer",
+      "theme": "retouch",
+      "problem": "Dust, small blemishes, scratches, or isolated distractions interrupt otherwise usable image detail.",
+      "when_to_use": [
+        "Use Spot Healing when nearby pixels offer suitable texture and color for an automatic repair.",
+        "Use selection-based Content-Aware Fill only when a larger selected repair is actually needed."
+      ],
+      "avoid": [
+        "Avoid removing intentional subject features or authentic product details.",
+        "Avoid repeated large strokes across strong edges when automatic sampling produces smears."
+      ],
+      "preconditions": [
+        "Work on a copy and inspect the defect at useful magnification.",
+        "Create an empty retouch layer above the source and enable sampling of visible source layers when supported."
+      ],
+      "limits": [
+        "Automatic blending is less predictable around complex edges or repeated structures.",
+        "A successful tool return does not prove the repair is visually convincing."
+      ],
+      "essential_steps": [
+        "Select the retouch layer and Spot Healing Brush.",
+        "Set a brush slightly larger than the defect and adapt hardness to the surrounding texture.",
+        "Use Content-Aware sampling and Sample All Layers when writing onto the empty layer.",
+        "Click a small spot or use a short stroke, then inspect before proceeding.",
+        "For a selected Content-Aware Fill route, preserve the source and verify that the actual MCP operation offers separate output or explicitly work on a disposable copy."
+      ],
+      "adapt_parameters": [
+        "Adapt brush size, hardness, stroke extent, sample scope, and selection margin to the defect.",
+        "Separate-layer sampling must be confirmed in the MCP implementation."
+      ],
+      "visual_check": [
+        "Inspect at 100% for halos, smears, repeated texture, broken edges, and lost detail.",
+        "Toggle the retouch layer and compare at fit view to ensure the repair serves the requested result."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/remove-objects-from-your-photos",
+        "title": "Remove unwanted objects from your photos",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Read visible Photoshop-on-the-web retouch transcript. Desktop Help confirms separate empty-layer Spot Healing and Content-Aware sampling; web UI is not taken as desktop MCP support.",
+        "secondary_urls": [
+          "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/remove-small-spots-with-the-spot-healing-brush.html"
+        ],
+        "source_ids": [
+          "cr-learn-web-retouch",
+          "cr-help-spot-healing"
+        ]
+      },
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "test_status": "not_run",
+      "editorial_note": "The card does not route to generative removal automatically. Exact implementation remains unverified.",
+      "synthesis_word_count": 240,
+      "mcp": {
+        "feasibility": "Spot Healing_documented_only; selected_content_aware_repair_available_destructively_on_a_copy",
+        "tools": [
+          "photoshop_create_layer",
+          "photoshop_duplicate_layer",
+          "photoshop_select_rectangle",
+          "photoshop_content_aware_fill",
+          "photoshop_recipe_remove_distraction",
+          "photoshop_get_state",
+          "photoshop_get_preview"
+        ],
+        "parameters": {
+          "photoshop_create_layer": {
+            "name": "explicit retouch layer name",
+            "document_id": "positive target id"
+          },
+          "photoshop_duplicate_layer": {
+            "newName": "disposable pixel copy name",
+            "document_id": "positive target id"
+          },
+          "photoshop_select_rectangle": {
+            "left": "pixel coordinate",
+            "top": "pixel coordinate",
+            "right": "pixel coordinate",
+            "bottom": "pixel coordinate",
+            "mode": [
+              "replace",
+              "add",
+              "subtract",
+              "intersect"
+            ],
+            "document_id": "positive target id"
+          },
+          "photoshop_content_aware_fill": {
+            "document_id": "positive target id; current pixel selection required"
+          },
+          "photoshop_recipe_remove_distraction": {
+            "feather_px": "0–20; adapt to selection edge",
+            "use_generative": false,
+            "document_id": "positive target id"
+          }
+        },
+        "limits": [
+          "No dedicated Spot Healing or Healing Brush tool is advertised. Creating an empty layer is possible, but no native tool exposes brush size/hardness/strokes or Sample All Layers. Empty-layer creation alone is not a realizable separate-layer healing workflow.",
+          "Content-Aware Fill uses a fill action on the active pixel layer and clears the selection. Its schema has no Output To New Layer, sampling-region, or Sample All Layers control.",
+          "The non-generative remove-distraction recipe also modifies selected pixels and clears the selection; it is not brush healing and does not create a new repair layer. Preserve originals by using a disposable source copy for this alternative.",
+          "Remove Distraction defaults to generative when version-derived capability is true; explicitly set use_generative:false when only classical content-aware repair is intended.",
+          "A spike script contains guessed removeTool/spotHealing Brush action probes and explicitly requests visual confirmation. Probe source code is not proof of supported brush execution or visual validation."
+        ],
+        "server_contract_notes": [
+          "Read photoshop_get_state; capture and pass a positive document_id; select the intended layer by exact unique name when needed; inspect photoshop_get_preview after the meaningful change. All current live schemas reject additional properties.",
+          "Selected distraction removal may use the matching recipe when suitable. Do not call a content-aware fill a validated Spot Healing workflow. Do not apply background-removal workarounds; that separate intent retains its strict recipe-only contract."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json (live 128 tools, server 1.7.37,2026-11-09)",
+          "photoshop-mcp/src/tools/selection-tools.ts:357–377 (selection fill tool and parameters)",
+          "photoshop-mcp/src/api/extendscript.ts:3007–3032 (current-layer fill, deselect, no output/sampling controls)",
+          "photoshop-mcp/src/tools/recipes/remove-distraction.ts:51–157 (generative default and non-generative pixel path)",
+          "photoshop-mcp/scripts/spike-photoshop-actions.ts:387–425 (experimental action probes, not validated brush support)"
+        ]
+      },
+      "runtime": {
+        "status": "not_run",
+        "checked_on": "2026-11-09",
+        "reason": "Not executed in the initial development batch; no runtime validation is bundled."
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "clone-stamp-controlled-repair",
+      "title": "Clone controlled source detail onto an editable retouch layer",
+      "theme": "retouch",
+      "problem": "A repair needs predictable source texture or an exact detail copy instead of automatic healing.",
+      "when_to_use": [
+        "Use when an appropriate sample exists and texture direction or structural continuity matters.",
+        "Use when healing blends unwanted colors into the target."
+      ],
+      "avoid": [
+        "Avoid cloning distinctive details repeatedly into an obvious pattern.",
+        "Do not stamp source detail with different lighting or perspective merely to cover the defect."
+      ],
+      "preconditions": [
+        "Create a blank pixel retouch layer above the source.",
+        "Choose Current & Below or All Layers so the blank layer can obtain image samples.",
+        "Choose a source region matching the target's texture and illumination."
+      ],
+      "limits": [
+        "Clone Stamp copies source detail rather than automatically matching target color and brightness.",
+        "It cannot paint onto an adjustment layer.",
+        "Source and target coordinates require image-specific decisions."
+      ],
+      "essential_steps": [
+        "Select Clone Stamp and set blend mode, brush properties, opacity, and flow.",
+        "Choose Aligned for continuous source offset, or unaligned sampling when each stroke should restart at the initial point.",
+        "Set the source with Alt/Option-click and paint short controlled strokes on the retouch layer.",
+        "Resample when nearing unsuitable source content or when repeated features become visible.",
+        "Keep the original image and retouch layer separately editable."
+      ],
+      "adapt_parameters": [
+        "Adapt source coordinates, brush size and hardness, mode, opacity, flow, alignment, and sample-layer scope.",
+        "Keep explicit source and target regions in any reproducible MCP test record."
+      ],
+      "visual_check": [
+        "Inspect edge continuity and texture at 100%.",
+        "Compare at fit view for repeated patterns, tonal seams, or an altered subject silhouette.",
+        "Toggle the retouch layer to ensure the intended defect alone was changed."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/remove-objects-from-your-photos",
+        "title": "Remove unwanted objects from your photos",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Learn transcript explains exact copying, separate retouch layer, and resampling repeated texture. Desktop Help confirms modes, sampling scopes, alignment, and the adjustment-layer restriction.",
+        "secondary_urls": [
+          "https://helpx.adobe.com/photoshop/desktop/repair-retouch/heal-clone/retouch-images-with-the-clone-stamp-tool.html"
+        ],
+        "source_ids": [
+          "cr-learn-web-retouch",
+          "cr-help-clone-stamp"
+        ]
+      },
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "test_status": "not_run",
+      "editorial_note": "This card describes the Adobe technique. It does not assert that MCP currently exposes a brush-based Clone Stamp tool.",
+      "synthesis_word_count": 246,
+      "mcp": {
+        "feasibility": "documented_only_no_dedicated_tool_or_verified_brush_script",
+        "tools": [
+          "photoshop_create_layer",
+          "photoshop_get_state",
+          "photoshop_get_preview"
+        ],
+        "parameters": {
+          "photoshop_create_layer": {
+            "name": "retouch layer name; preparation only",
+            "document_id": "positive target id"
+          },
+          "missing_native_controls": [
+            "clone source point",
+            "target brush stroke",
+            "Aligned",
+            "sampling layer scope",
+            "brush hardness/size/flow for cloning"
+          ]
+        },
+        "limits": [
+          "No Clone Stamp tool is present in the current 128 tools, and no verified Clone Stamp implementation was found in src/tools or src/api/extendscript.ts.",
+          "Creating an empty pixel layer is preparation only; it does not supply a sample source or paint cloned pixels.",
+          "Content-Aware Fill, Healing, and generative removal are different methods. Do not silently use them when exact source-detail cloning is required.",
+          "The generic execute_script escape hatch does not prove brush-event descriptors or sample-all-layers cloning. No invented cloneStamp()/paintStroke() function is authorized by this mapping.",
+          "A recorded action might become usable through photoshop_play_action only if a real matching action/set is supplied and its image-specific sampling behavior is verified separately; none was inspected or executed here."
+        ],
+        "server_contract_notes": [
+          "Read photoshop_get_state; capture and pass a positive document_id; select the intended layer by exact unique name when needed; inspect photoshop_get_preview after the meaningful change. All current live schemas reject additional properties.",
+          "Keep this card documented-only until an exact native or verified scripted/manual path is available. Do not claim a retouching result merely because a blank layer was added."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json (live 128 tools, server 1.7.37,2026-11-09)",
+          "photoshop-mcp/src/tools/layer-tools.ts:8–28 (blank layer creation only)",
+          "photoshop-mcp/src/tools/action-tools.ts:12–35 (action requires an actual existing action/set)",
+          "photoshop-mcp/src/tools/action-tools.ts:38–74 (generic JSX is not a specific brush implementation)",
+          "Staticsearchofsrc/toolsandapi/extendscript.tsfoundnoClone Stampimplementation"
+        ]
+      },
+      "runtime": {
+        "status": "not_run",
+        "checked_on": "2026-11-09",
+        "reason": "Not executed in the initial development batch; no runtime validation is bundled."
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "crop-straighten-composition",
+      "title": "Crop and straighten while preserving intended framing",
+      "theme": "composition",
+      "problem": "The image has excess edges, a tilted horizon, or the wrong framing for the requested format.",
+      "when_to_use": [
+        "Use when changing composition or fitting a requested aspect ratio.",
+        "For a simple pixel resize with acceptable framing, resize without adding a crop."
+      ],
+      "avoid": [
+        "Do not cut important subject features solely to fill a template.",
+        "Do not invent missing background through content-aware or generative expansion unless justified or requested."
+      ],
+      "preconditions": [
+        "Know the requested aspect ratio and the content that must remain visible.",
+        "Distinguish aspect ratio from pixel dimensions and resolution."
+      ],
+      "limits": [
+        "Straightening can expose empty corners or require cropping.",
+        "Hidden cropped content is recoverable only if the actual operation preserves it; MCP parity must be checked."
+      ],
+      "essential_steps": [
+        "Select the Crop tool and set the boundary by dragging edges or entering an aspect ratio.",
+        "Straighten by rotating outside the crop boundary and comparing a real horizon or architectural line with the grid.",
+        "Position the image within the boundary; composition guides are optional aids, not a fixed rule.",
+        "Leave Delete Cropped Pixels disabled when reversible framing is required and supported.",
+        "Commit only after checking all important edges, then clear a temporary crop ratio so it does not affect later work."
+      ],
+      "adapt_parameters": [
+        "Adapt crop rectangle, target ratio, rotation angle, focal placement, and preserved margins to the image.",
+        "Choose output pixel dimensions separately rather than treating a ratio as a size."
+      ],
+      "visual_check": [
+        "Inspect the entire frame for clipped wheels, limbs, text, or other required details.",
+        "Check that genuinely horizontal or vertical references appear correct and that no blank corners remain.",
+        "Verify resulting dimensions and whether hidden pixels can still be recovered."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/crop-straighten-to-improve-composition",
+        "title": "How to crop a photo",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Read the four-step desktop tutorial transcript and written recap: boundary, aspect ratio, positioning, non-destructive option, commit, and clearing settings.",
+        "secondary_urls": [],
+        "source_ids": [
+          "cr-learn-crop"
+        ]
+      },
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "test_status": "historical_report_not_reproduced_here",
+      "editorial_note": "The resize-only exclusion and subject-margin check apply the user's requested scope control.",
+      "synthesis_word_count": 257,
+      "mcp": {
+        "feasibility": "native_destructive_rectangular_crop; no_native_nondestructive_or_document_straighten_control",
+        "tools": [
+          "photoshop_crop_document",
+          "photoshop_resize_image",
+          "photoshop_rotate_layer",
+          "photoshop_get_state",
+          "photoshop_get_preview"
+        ],
+        "parameters": {
+          "photoshop_crop_document": {
+            "left": "nonnegativepx",
+            "top": "nonnegativepx",
+            "right": "px>left",
+            "bottom": "px>top",
+            "document_id": "positive target id"
+          },
+          "photoshop_resize_image": {
+            "width": "targetpx>=1",
+            "height": "targetpx>=1",
+            "document_id": "positive target id"
+          },
+          "photoshop_rotate_layer": {
+            "degrees": "clockwisepositive; targetlayeronly",
+            "document_id": "positive target id"
+          },
+          "missing_native_controls": [
+            "Delete Cropped Pixels:false",
+            "cropangle",
+            "straightenreference-line",
+            "cropaspect-ratioasaseparateparameter"
+          ]
+        },
+        "limits": [
+          "The crop tool passes a rectangle to doc.crop(bounds), deletes pixels outside it, and affects all layers. It has no nondestructive-crop flag, ratio control, or straighten angle.",
+          "Compute a rectangle from the intended aspect ratio and visible subject; do not send ratio, rotation, or preserve-pixels fields absent from the live schema.",
+          "Layer rotation does not rotate the document canvas or straighten an entire multilayer document. A layer-rotate-plus-crop sequence is not automatically equivalent to Adobe CropTool straightening.",
+          "ResizeImage resamples the entire document to exactly the supplied width and height; it is a separate operation. Preserve aspect ratio by calculating both values rather than assuming a constrain-proportions option.",
+          "Test destructive crop on a disposable document copy. No current verified script for nondestructive CropTool straightening is supplied by this mapping."
+        ],
+        "server_contract_notes": [
+          "Read photoshop_get_state; capture and pass a positive document_id; select the intended layer by exact unique name when needed; inspect photoshop_get_preview after the meaningful change. All current live schemas reject additional properties.",
+          "A resize-only request should use resize_image without an added crop or style change. Use crop_document only when its destructive rectangle matches the requested result and the source is preserved."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json (live 128 tools, server 1.7.37,2026-11-09)",
+          "photoshop-mcp/src/tools/image-tools.ts:9–75 (resize/crop schemas and destructive side effects)",
+          "photoshop-mcp/src/api/extendscript.ts:2478–2492 (doc.crop(bounds))",
+          "photoshop-mcp/src/api/extendscript.ts:1850–1872 (layer.rotate, not canvas)",
+          "photoshop-mcp/src/tools/layer-transform-tools.ts:82–112 (rotate_layer degrees only)"
+        ]
+      },
+      "runtime": {
+        "status": "historical_report_not_reproduced_here",
+        "reported_status": "validated_crop_component_only",
+        "reported_checked_on": "2026-11-09",
+        "reported_environment": {
+          "photoshop": "27.11.0",
+          "mcp": "1.7.37",
+          "commit": "ba36d8f2a28ecc56686568f3c0191e388336d498"
+        },
+        "observations": [
+          "Bounds350,40–1550,800 yielded1200×760; all product wheels remain inside the crop."
+        ],
+        "limits": [
+          "This atomic crop deletes outside pixels. Straightening and non-destructive crop were not tested or exposed by this tool.",
+          "Historical development summary only. Raw logs, local paths and fixture files are not distributed; installation does not run or certify this operation."
+        ]
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "transform-perspective-alignment",
+      "title": "Align a layer with proportional transforms; use perspective correction only when needed",
+      "theme": "composition",
+      "problem": "A placed layer has the wrong scale, rotation, position, or perspective relative to the target scene.",
+      "when_to_use": [
+        "Use the smallest transform that resolves the mismatch.",
+        "Use perspective correction for tilted architecture or a justified composite with clearly identifiable planes."
+      ],
+      "avoid": [
+        "Do not stretch products non-proportionally to fill space.",
+        "Do not use viewpoint-changing Perspective Warp as a routine alignment shortcut."
+      ],
+      "preconditions": [
+        "Identify the target plane, horizon, and alignment references.",
+        "Prefer preserved source data such as a Smart Object for repeated transformations.",
+        "Check the actual Photoshop feature and MCP operation separately."
+      ],
+      "limits": [
+        "Free Transform perspective and Perspective Warp's connected planes are different operations.",
+        "Repeated committed transforms of ordinary pixels can soften them."
+      ],
+      "essential_steps": [
+        "Select the intended layer and enter Free Transform.",
+        "Keep width and height linked for proportional scaling; set position and rotation numerically when useful.",
+        "Use distortion or perspective only if the requested scene requires it, then commit the combined transformation once.",
+        "If genuine Perspective Warp is available and appropriate, fit layout grids to the image planes, connect adjoining edges, switch to Warp, and refine pins against the scene's lines.",
+        "Compare the result with the preserved original."
+      ],
+      "adapt_parameters": [
+        "Adapt X/Y position, equal scale values, angle, pivot/reference point, and any justified corner or plane coordinates.",
+        "Plane coordinates cannot be reused blindly across images."
+      ],
+      "visual_check": [
+        "Check subject proportions, straight edges, contact with the scene, and complete frame coverage.",
+        "Inspect at 100% for resampling damage and at fit view for credible perspective.",
+        "Do not call a transform validated from a tool response alone."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/photoshop-perspective-warp",
+        "title": "Adjust perspective in a photo",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Read visible legacy Perspective Warp transcript. Current desktop Free Transform Help supplies proportional scaling, positioning, combined transforms, and Smart Object preservation.",
+        "secondary_urls": [
+          "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/transform-images-shapes-and-paths.html",
+          "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/transform-manipulate-reshape/adjust-scale-rotation-and-perspective.html"
+        ],
+        "source_ids": [
+          "cr-learn-perspective",
+          "cr-help-free-transform",
+          "cr-help-transform-types"
+        ]
+      },
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "test_status": "historical_report_not_reproduced_here",
+      "editorial_note": "The Learn page was published in 2026 but the transcript calls Perspective Warp new to Photoshop CC. This is not evidence of a current minimum version.",
+      "synthesis_word_count": 244,
+      "mcp": {
+        "feasibility": "native_proportional_scale_move_rotate; perspective_and_PerspectiveWarp_not_exposed_or_verified",
+        "tools": [
+          "photoshop_select_layer_by_name",
+          "photoshop_convert_to_smart_object",
+          "photoshop_scale_layer",
+          "photoshop_fit_layer_to_document",
+          "photoshop_move_layer",
+          "photoshop_rotate_layer",
+          "photoshop_get_state",
+          "photoshop_get_layers",
+          "photoshop_get_preview"
+        ],
+        "parameters": {
+          "photoshop_select_layer_by_name": {
+            "name": "unique exact name",
+            "document_id": "positive target id"
+          },
+          "photoshop_convert_to_smart_object": {
+            "layer_name": "optional exact name",
+            "document_id": "positive target id"
+          },
+          "photoshop_scale_layer": {
+            "scalePercent": ">=1;uniform width and height percentage",
+            "centerAnchor": "true=center,false=top-left",
+            "document_id": "positive target id"
+          },
+          "photoshop_fit_layer_to_document": {
+            "fillDocument": "false=fitinside,true=cover and possibly crop",
+            "document_id": "positive target id"
+          },
+          "photoshop_move_layer": {
+            "deltaX": "relative pixel offset",
+            "deltaY": "relative pixel offset",
+            "document_id": "positive target id"
+          },
+          "photoshop_rotate_layer": {
+            "degrees": "relative clockwise angle",
+            "document_id": "positive target id"
+          },
+          "missing_native_controls": [
+            "independent corner coordinates",
+            "skew/distort/perspective",
+            "Perspective Warp layout planes/pins",
+            "arbitrary pivot",
+            "absoluteX/Yplacement"
+          ]
+        },
+        "limits": [
+          "Native scale calls layer.resize(percent,percent), preserving proportions. centerAnchor offers only center/top-left. Native move is relative translation; native rotate is relative rotation around center.",
+          "Transform tools reject Background layers and scaling rejects empty bounding rectangles. SmartObject conversion also requires an unlocked/non-Background target.",
+          "Fitting to fillDocument:true covers the canvas and may hide important edges; fitinside may leave margins.",
+          "The recipe batch_mockup_replace preserves pre-existing SmartObject perspective/warp; that does not mean MCP can author a new perspective transform or PerspectiveWarp plane network.",
+          "No current dedicated perspective/distort/warp tool or verified script was found. A generic escape hatch is not evidence of these operations.",
+          "Do not rasterize a SmartObject to satisfy a transform or assume native scale/rotate equals PerspectiveWarp."
+        ],
+        "server_contract_notes": [
+          "Read photoshop_get_state; capture and pass a positive document_id; select the intended layer by exact unique name when needed; inspect photoshop_get_preview after the meaningful change. All current live schemas reject additional properties.",
+          "Use these atomics for single precise transforms. Scale/rotate/move accumulate, so reread state before repeating them after an error. Preserve source via SmartObject when compatible."
+        ],
+        "implementation_evidence": [
+          "validation/environment-20261109/discovery.json (live 128 tools, server 1.7.37,2026-11-09)",
+          "photoshop-mcp/src/tools/layer-transform-tools.ts:8–114 (actual schemas)",
+          "photoshop-mcp/src/api/extendscript.ts:1792–1872 (uniform resize, relative offset, center rotation)",
+          "photoshop-mcp/src/tools/smart-object-tools.ts:15–36 (conversion preconditions)",
+          "photoshop-mcp/src/tools/recipes/batch-mockup-replace.ts:30–38 (preserves existing warp, does not create one)"
+        ]
+      },
+      "runtime": {
+        "status": "historical_report_not_reproduced_here",
+        "reported_status": "validated_uniform_scale_component_only",
+        "reported_checked_on": "2026-11-09",
+        "reported_environment": {
+          "photoshop": "27.11.0",
+          "mcp": "1.7.37",
+          "commit": "ba36d8f2a28ecc56686568f3c0191e388336d498"
+        },
+        "observations": [
+          "Smart Object bounds changed from1200×800 to960×640, centered at120,80; proportions remained intact."
+        ],
+        "limits": [
+          "Rotation, straightening, corner transforms and Perspective Warp were not tested; native uniform scale is not perspective support.",
+          "Historical development summary only. Raw logs, local paths and fixture files are not distributed; installation does not run or certify this operation."
+        ]
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "smart-object-place-transform",
+      "title": "Place and transform an asset as an editable Smart Object",
+      "theme": "smart-objects",
+      "problem": "A layout needs a photograph positioned and resized while retaining its source for later changes.",
+      "when_to_use": [
+        "An imported asset will be scaled, rotated, replaced or revised.",
+        "A reusable composition must keep its photographs independent of surrounding layers."
+      ],
+      "avoid": [
+        "Do not convert unrelated layers merely because the feature is available.",
+        "Do not rasterize the placed source to make a simple transform easier."
+      ],
+      "preconditions": [
+        "Inspect the intended destination document and source dimensions.",
+        "Use an available source file; an embedded object packages its source in the document."
+      ],
+      "limits": [
+        "A Smart Object preserves source content; it does not create missing photographic detail.",
+        "The Learn transcript uses a legacy Shift-key instruction for proportional scaling. Use explicit linked proportions in the current UI or equivalent verified MCP parameters rather than copying that modifier blindly."
+      ],
+      "essential_steps": [
+        "Use Place Embedded to import the asset, or convert the selected existing content to a Smart Object when appropriate.",
+        "Scale proportionally, position and optionally rotate, then commit the transform.",
+        "Keep the object separate and named. Edit its contents through its thumbnail when an actual source revision is needed.",
+        "Save the layered working file; export a separate presentation copy if required."
+      ],
+      "adapt_parameters": [
+        "Source and destination pixel dimensions; proportional scale; placement anchor; rotation; important subject bounds; intended output size."
+      ],
+      "visual_check": [
+        "Inspect the whole composition and the important subject at useful detail scale: no stretching, accidental crop or soft detail hidden by a small preview.",
+        "Verify a Smart Object entry remains in the layer structure. Repositionability alone is not proof that source pixels were retained."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/applying-filters-basics",
+        "title": "Apply filters — part 2: placing the foreground image",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Part 2 placement, positioning and committing the transform were read. The video itself was not played."
+      },
+      "supplementary_sources": [
+        {
+          "url": "https://www.adobe.com/products/photoshop/smart-objects.html",
+          "title": "Create embedded Smart Objects",
+          "content_read": "article_text",
+          "coverage": "Adobe Help content surfaced at an Adobe product URL: embedded creation routes and editing contents."
+        }
+      ],
+      "guidance_origin": "Menu mechanics are documented by Adobe; selection criteria and visual acceptance checks are application guidance, not claims of Adobe certification.",
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "test_status": "historical_report_not_reproduced_here",
+      "mcp": {
+        "feasibility": "native_with_kind_verification",
+        "tools": [
+          "photoshop_place_image",
+          "photoshop_convert_to_smart_object",
+          "photoshop_get_layers",
+          "photoshop_select_layer_by_name",
+          "photoshop_scale_layer",
+          "photoshop_move_layer",
+          "photoshop_rotate_layer",
+          "photoshop_fit_layer_to_document",
+          "photoshop_replace_smart_object_contents",
+          "photoshop_edit_smart_object_contents",
+          "photoshop_create_smart_object_via_copy",
+          "photoshop_save_document"
+        ],
+        "parameter_constraints": {
+          "place": "filePath exists; x/y absolute top-left canvas coordinates in pixels, not offsets from Photoshop's default centered Place. Placement invokes AM Plc then translates its actual bounds.",
+          "convert": "Optional exact layer_name; background layer is rejected; existing Smart Object returns already_smart_object. Do not use this conversion as background-removal preparation.",
+          "scale": "scalePercent >=1 applies the same percentage to both axes; centerAnchor true by default, false uses top-left. Background or an empty layer cannot transform.",
+          "move": "deltaX/deltaY are relative pixel offsets; rotation degrees use middle-center.",
+          "fit": "fillDocument false fits inside with possible margins; true fills the canvas and can crop subjects.",
+          "replace": "file_path must be absolute and exist; optional exact layer_name; embedded-content replacement, not a linked-file relink.",
+          "edit_contents": "Opens embedded PSB as active document: re-list and pin IDs before returning to the parent. Do not assume the original tab stayed active.",
+          "targeting": "Pin a positive document_id from current state on mutations, previews and save; use exact unique layer names."
+        },
+        "side_effects": [
+          "Place adds a layer and can auto-fit on import. Inspect bounds rather than assuming native source scale.",
+          "Convert bundles content; edit-contents changes active document; ordinary duplicate instances may share content, whereas via-copy is independent.",
+          "Replace changes embedded source while retaining transforms; do not confuse preserving transforms with preserving the old source content."
+        ],
+        "sources_inspected": [
+          "src/tools/image-placement-tools.ts",
+          "src/tools/smart-object-tools.ts",
+          "src/api/extendscript.ts:1264",
+          "src/api/extendscript.ts:1792",
+          "src/api/extendscript.ts:1850",
+          "src/api/extendscript.ts:4581"
+        ]
+      },
+      "runtime": {
+        "status": "historical_report_not_reproduced_here",
+        "reported_status": "validated_place_convert_scale_components",
+        "reported_checked_on": "2026-11-09",
+        "reported_environment": {
+          "photoshop": "27.11.0",
+          "mcp": "1.7.37",
+          "commit": "ba36d8f2a28ecc56686568f3c0191e388336d498"
+        },
+        "observations": [
+          "Convert-to-Smart-Object retained SMARTOBJECT kind after80% uniform scale.",
+          "Separate clipping case confirms place_image imported an embedded Smart Object."
+        ],
+        "limits": [
+          "Replace/edit contents, independent copies and production output quality were not tested.",
+          "Historical development summary only. Raw logs, local paths and fixture files are not distributed; installation does not run or certify this operation."
+        ]
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "smart-filters",
+      "title": "Apply a purposeful filter as a re-editable Smart Filter",
+      "theme": "smart-objects",
+      "problem": "A blur or other supported effect is needed, but its strength or coverage may change after review.",
+      "when_to_use": [
+        "A requested blur, sharpening or supported effect benefits from revisable settings.",
+        "An effect needs a mask or before-and-after comparison."
+      ],
+      "avoid": [
+        "Do not add blur, sharpening or creative filters to a request that does not need them.",
+        "Do not treat the tutorial's background blur as a default finishing step for every photograph."
+      ],
+      "preconditions": [
+        "Choose the correct content layer and convert it for Smart Filters if it is not already a Smart Object.",
+        "Check filter compatibility with the document's mode, bit depth and installed Photoshop version."
+      ],
+      "limits": [
+        "Not all filters support this workflow; Adobe's current Help excludes, among others, Lens Blur and Vanishing Point.",
+        "Rasterizing a Smart Object discards the editable Smart Filter relationship. Effect order matters because the stack is processed from the bottom upwards."
+      ],
+      "essential_steps": [
+        "Select the intended layer and use Convert for Smart Filters.",
+        "Apply only the needed supported filter; for the documented example, adjust Gaussian Blur using its live preview.",
+        "Check the filter entry beneath the Smart Object and re-open its settings to confirm it is adjustable.",
+        "Use filter visibility or its mask for comparison or local coverage; preserve the layered working document."
+      ],
+      "adapt_parameters": [
+        "Radius or effect amount relative to image size and intended viewing scale; filter order; blend mode and opacity; mask coverage."
+      ],
+      "visual_check": [
+        "Compare effect on and off at composition scale and at detail scale.",
+        "Check edges for halos, excessive softness and abrupt mask boundaries; confirm the filter remains separately editable."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/applying-filters-basics",
+        "title": "Apply filters — part 2: Blur an image with Smart Filters",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Conversion, Gaussian Blur preview, revisiting settings and layered PSD preservation read; video not played."
+      },
+      "supplementary_sources": [
+        {
+          "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/apply-and-manage-smart-filters.html",
+          "title": "Apply and manage Smart Filters",
+          "content_read": "article_text",
+          "coverage": "Smart Object prerequisite, stack order, editable properties, exclusions and rasterization consequences; updated October 4, 2026."
+        }
+      ],
+      "guidance_origin": "Adobe documents the mechanism and compatibility limitations. Restrained use and the image-specific visual checks are implementation guidance.",
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "test_status": "historical_report_not_reproduced_here",
+      "mcp": {
+        "feasibility": "script_or_manual_only_for_editable_filter",
+        "tools": [
+          "photoshop_convert_to_smart_object",
+          "photoshop_execute_script",
+          "photoshop_get_layers",
+          "photoshop_save_document"
+        ],
+        "not_equivalent_tools": [
+          "photoshop_apply_gaussian_blur",
+          "photoshop_apply_sharpen",
+          "photoshop_apply_smart_blur",
+          "photoshop_apply_high_pass"
+        ],
+        "parameter_constraints": {
+          "native_blur": "radius0.1–250px, but the native Gaussian snippet rasterizes both TEXT and SMARTOBJECT before applying pixels. It cannot implement the Adobe editable Smart Filter technique.",
+          "script": "A separately inspected and executed Action Manager/other supported script may be used through photoshop_execute_script when permitted. Code is not validated by existing tool availability; verify the resulting filter entry and editable source on a disposable copy.",
+          "execute_script": "code string; timeout_ms1000–600000; current document_id pin. No scripts for the strict background-removal intent."
+        },
+        "side_effects": [
+          "Gaussian, sharpen, noise and motion blur atomics silently rasterize a Smart Object/text layer. A successful response may omit that fact.",
+          "Smart Blur is a named pixel-filter effect, not a synonym for Smart Filters. The high-pass/smart-blur helpers reject unsupported layer kinds and suggest rasterization; do not follow that if editability is required."
+        ],
+        "sources_inspected": [
+          "src/tools/filter-tools.ts",
+          "src/api/extendscript.ts:2059",
+          "src/api/extendscript.ts:2090",
+          "src/api/extendscript.ts:2180"
+        ]
+      },
+      "runtime": {
+        "status": "historical_report_not_reproduced_here",
+        "reported_status": "validated_custom_script_fixture_only",
+        "reported_checked_on": "2026-11-09",
+        "reported_environment": {
+          "photoshop": "27.11.0",
+          "mcp": "1.7.37",
+          "commit": "ba36d8f2a28ecc56686568f3c0191e388336d498"
+        },
+        "observations": [
+          "Exact stored Action Manager script applied5px Gaussian Blur; result reports SMARTOBJECT and smart_filter_count=1.",
+          "Preview shows expected blur while source stays embedded. PSD saved."
+        ],
+        "limits": [
+          "Native photoshop_apply_gaussian_blur remains unsafe for editability because it rasterizes.",
+          "Filter parameter re-editing, other filters and complex documents were not tested.",
+          "Initial case01 encountered JSON-is-undefined after applying blur; state/metadata was checked and the blur was not repeated during recovery.",
+          "Historical development summary only. Raw logs, local paths and fixture files are not distributed; installation does not run or certify this operation."
+        ],
+        "verified_script": "references/verified-scripts/smart-gaussian.jsx"
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "editable-type",
+      "title": "Create readable text on editable Type layers",
+      "theme": "text",
+      "problem": "A design requires text whose wording, appearance and placement can still be revised.",
+      "when_to_use": [
+        "Text is requested or is necessary to the stated deliverable.",
+        "Use point text for a short label or headline; use a paragraph box for longer controlled wrapping."
+      ],
+      "avoid": [
+        "Do not add a slogan, label or logo to an image-only request.",
+        "Do not rasterize type for routine styling or positioning. Do not select an arbitrary font just because the tutorial uses it."
+      ],
+      "preconditions": [
+        "Confirm the exact wording and the intended document.",
+        "Choose an installed font or an explicitly supplied font file; account for document resolution because font size is measured in points."
+      ],
+      "limits": [
+        "A JPEG sharing copy does not retain editable type.",
+        "A font appearing in a tutorial is not evidence that it exists on this machine. A text box can hide overflow that is not obvious in a small preview."
+      ],
+      "essential_steps": [
+        "Create point text by clicking with the Type tool, or paragraph text by dragging a box.",
+        "Set the actual wording, font, point size, color and alignment; commit the text.",
+        "Move the Type layer into position and adjust line wrapping or spacing only as needed.",
+        "Keep editable type in the layered working file and export a separate delivery copy when required."
+      ],
+      "adapt_parameters": [
+        "Installed font's PostScript name; point size; tracking; leading; paragraph box dimensions; alignment; position; color against the actual photograph."
+      ],
+      "visual_check": [
+        "Read every word at expected output size; inspect contrast over the image, clipped letters, unintended breaks and paragraph overflow.",
+        "Verify the Type layer survives and that a wording edit still works. Check the exported copy separately."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/add-text-to-image",
+        "title": "Add text to your photos",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Full tutorial transcript and written recap read: font, size, color, position and PSD preservation. No video playback claimed."
+      },
+      "supplementary_sources": [
+        {
+          "url": "https://helpx.adobe.com/photoshop/desktop/text-typography/get-started-with-text/add-text.html",
+          "title": "Add text",
+          "content_read": "article_text",
+          "coverage": "Point versus paragraph text mechanics."
+        }
+      ],
+      "guidance_origin": "Adobe documents editable type creation. Readability checks and scope restraint are application criteria, not an Adobe-prescribed typography style.",
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "test_status": "historical_report_not_reproduced_here",
+      "mcp": {
+        "feasibility": "native",
+        "tools": [
+          "photoshop_list_fonts",
+          "photoshop_create_text_layer",
+          "photoshop_update_text_content",
+          "photoshop_set_text_style",
+          "photoshop_set_text_font",
+          "photoshop_set_text_alignment",
+          "photoshop_set_text_ranges",
+          "photoshop_move_layer",
+          "photoshop_save_document"
+        ],
+        "parameter_constraints": {
+          "content": "create/update text require exact text. Discover installed fontName/PostScript name using list_fonts.",
+          "units": "x/y and paragraph box_width/box_height in pixels; fontSize and leading in points; tracking in1/1000em.",
+          "style": "fontSize1–10000; leading0.1–10000; tracking−1000–10000; paragraph dimensions1–100000 rounded to integers; auto_leading true overrides fixed leading.",
+          "color": "Supply red,green,blue together, each0–255. Supplying only one channel errors even though schema properties are individually optional.",
+          "kind": "point or paragraph; supplying a box dimension defaults kind to paragraph unless explicitly set; avoid contradictory point+box inputs.",
+          "ranges": "1–64 non-overlapping ranges; from inclusive and to exclusive, using JavaScript/ExtendScript string indices. Whole-layer styling uses set_text_style instead.",
+          "routing": "Do not execute_script for tracking/leading/box or split mixed styles into extra layers unless the native tool fails."
+        },
+        "side_effects": [
+          "Creates or edits live Type layers; applying subsequent rasterizing filters destroys editability.",
+          "Paragraph boxes can overflow; native success does not verify all wording remains visible.",
+          "JPEG exports do not retain live text; save a layered PSD for further editing."
+        ],
+        "sources_inspected": [
+          "src/tools/text-tools.ts",
+          "src/tools/text-style-options.ts",
+          "src/api/extendscript.ts"
+        ]
+      },
+      "runtime": {
+        "status": "historical_report_not_reproduced_here",
+        "reported_status": "validated_fixture_only",
+        "reported_checked_on": "2026-11-09",
+        "reported_environment": {
+          "photoshop": "27.11.0",
+          "mcp": "1.7.37",
+          "commit": "ba36d8f2a28ecc56686568f3c0191e388336d498"
+        },
+        "observations": [
+          "Readable paragraph type with32pt size, tracking20 and leading40 remains LayerKind.TEXT after grouping."
+        ],
+        "limits": [
+          "Mixed fonts/ranges, installed-font changes and clipping/overflow across other content were not tested.",
+          "Historical development summary only. Raw logs, local paths and fixture files are not distributed; installation does not run or certify this operation."
+        ]
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "generative-fill",
+      "title": "Use Generative Fill for an explicitly needed local content change",
+      "theme": "generative",
+      "problem": "A requested local addition, replacement or contextual fill needs newly generated image content.",
+      "when_to_use": [
+        "The intended result permits generated content and cannot be achieved sufficiently by an ordinary requested edit.",
+        "A defined selected region and a clear content objective exist."
+      ],
+      "avoid": [
+        "Do not generate substitute vehicles, products or factual details when authentic photography is required.",
+        "Do not run generations merely to test availability; capability discovery and account checks precede any credit-consuming execution."
+      ],
+      "preconditions": [
+        "Check installed Photoshop, current MCP capabilities, selected document/layer, active selection, online access and Adobe account entitlement independently.",
+        "Verify the available model and its current credit terms; the presence of a tool or a version-based capability flag does not prove account access."
+      ],
+      "limits": [
+        "Output is invented content and needs inspection; a plausible preview is not proof of product accuracy.",
+        "Model names, availability and credit consumption change. The current desktop Help lists newer models and retirement of Gemini 2.5 in v27.11+, so do not reuse older tutorial model assumptions."
+      ],
+      "essential_steps": [
+        "Define the smallest suitable selection, leaving enough context for the intended replacement.",
+        "Invoke Generative Fill with a concise content description, or a blank prompt for contextual filling when appropriate.",
+        "Choose a variation only after inspecting its content and its junction with the source.",
+        "Keep the generative layer and original content separate; stop when the requested change is sufficient."
+      ],
+      "adapt_parameters": [
+        "Selection bounds and shape; prompt; available model; variation; generation/output size; extent of context; allowed credit budget."
+      ],
+      "visual_check": [
+        "Inspect seams, lighting, perspective, repeated textures and malformed objects, plus all important unchanged source details.",
+        "Compare the layer off/on and inspect the final output at actual delivery scale."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/the-unlock-add-to-a-scene-with-generative-fill",
+        "title": "Add to a scene with Generative Fill",
+        "checked_on": "2026-11-09",
+        "content_read": "written_steps",
+        "coverage": "Three written step sections read. All embedded clips explicitly say Transcript not available; no video analysis claimed."
+      },
+      "supplementary_sources": [
+        {
+          "url": "https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/edit-images-with-generative-fill.html",
+          "title": "Edit images with Generative Fill",
+          "content_read": "article_text",
+          "coverage": "Desktop workflow, current model picker and model retirement note."
+        },
+        {
+          "url": "https://helpx.adobe.com/photoshop/desktop/generative-ai/frequently-asked-questions-about-generative-ai-features.html",
+          "title": "Generative AI features FAQ",
+          "content_read": "article_text",
+          "coverage": "Online connection, subscriber/trial access and generative layers; older cost/resolution claims require qualification."
+        },
+        {
+          "url": "https://helpx.adobe.com/creative-cloud/apps/generative-ai/creative-cloud-generative-ai-features.html",
+          "title": "Creative Cloud Generative AI features",
+          "content_read": "article_text",
+          "coverage": "October 1, 2026 standard/premium and plan/model-dependent credit distinctions."
+        }
+      ],
+      "guidance_origin": "Adobe documents selection, prompting and variation workflow. Authenticity constraints and the minimum sufficient intervention are user/project rules. No account or generation was tested.",
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "test_status": "not_run",
+      "mcp": {
+        "feasibility": "partial_native_unverified_service_access",
+        "tools": [
+          "photoshop_get_capabilities",
+          "photoshop_generative_fill",
+          "photoshop_select_rectangle",
+          "photoshop_get_preview"
+        ],
+        "parameter_constraints": {
+          "prompt": "Native handler trims and rejects an empty prompt as generative_unavailable:prompt is required. Adobe's blank-prompt contextual fill is not supported by this native tool.",
+          "selection": "An active pixel selection is mandatory; establish it with a suitable verified selection tool for this content.",
+          "unexposed_controls": "No model picker, generation size, variation selection or credit-budget parameter is advertised. Do not pass invented parameters or claim this tool selects a current Adobe/partner model.",
+          "version": "Capability implementation gates generative_fill at major>=25, although tool prose saysPS24+. Use actual live feature flag and implementation, not the looser description.",
+          "wait": "The action is attempted via fallback event IDs and uses a history-count completion heuristic. Returned ok:true can coexist with details.wait.completed:false; success can mean invoked rather than completed."
+        },
+        "side_effects": [
+          "May consume Adobe credits and create/modify content. Account/model access is not tested.",
+          "May deselect the selection after invocation.",
+          "Not a fallback for strict background removal; do not generate factual product details when authentic photography is required."
+        ],
+        "sources_inspected": [
+          "src/tools/generative-tools.ts:178",
+          "src/tools/generative/_shared.ts",
+          "src/platform/capabilities.ts",
+          "src/api/extendscript.ts:3814",
+          "src/api/extendscript.ts:3903"
+        ],
+        "capability_observed": {
+          "generative_fill": true,
+          "actual_generation": "not_run",
+          "account_and_credits": "not_verified"
+        }
+      },
+      "runtime": {
+        "status": "not_run",
+        "checked_on": "2026-11-09",
+        "reason": "Not executed in the initial development batch; no runtime validation is bundled."
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "generative-expand",
+      "title": "Extend an image boundary with Generative Expand when generated surroundings are acceptable",
+      "theme": "generative",
+      "problem": "A requested aspect ratio needs extra image area while retaining the existing subject.",
+      "when_to_use": [
+        "The requested format needs more surrounding scene than the source contains and new generated surroundings are acceptable.",
+        "Ordinary crop, canvas extension or placement cannot sufficiently meet the request."
+      ],
+      "avoid": [
+        "Do not substitute generation for a simple resize.",
+        "Do not describe generated scene or reconstructed missing product parts as a genuine photograph of that content."
+      ],
+      "preconditions": [
+        "Inspect the source and decide the exact output aspect ratio and preserved content.",
+        "Check desktop version, current MCP support, account, internet and model/credit conditions separately before generation."
+      ],
+      "limits": [
+        "The tutorial's 4:5 ratio and three variations are examples, not universal output requirements.",
+        "A crop boundary represents proportions, not centimeters or inches. Current model support must be discovered rather than inferred from the tutorial."
+      ],
+      "essential_steps": [
+        "Choose the Crop tool's Generative Expand mode and set the needed aspect ratio.",
+        "Extend the boundary while keeping all source content that must be preserved inside it; position the original deliberately.",
+        "Use an optional prompt only if the needed new area requires explicit direction; otherwise contextual expansion may suffice.",
+        "Generate and inspect variations. Preserve the resulting generative layer and stop once the required area is usable."
+      ],
+      "adapt_parameters": [
+        "Final pixel dimensions and ratio; expansion amount on each edge; original image position; prompt; model; variation and credit budget."
+      ],
+      "visual_check": [
+        "Compare with the original to confirm important source content remains.",
+        "Inspect horizon continuity, perspective, repeated structures and transitions at expansion seams. Check the enlarged output's actual dimensions."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/expand-image-generative-fill",
+        "title": "How to expand images with generative AI in Photoshop",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Full available transcript read, including ratio, repositioning, optional prompt and generative layer comparison. Video not played."
+      },
+      "supplementary_sources": [
+        {
+          "url": "https://helpx.adobe.com/creative-cloud/apps/generative-ai/creative-cloud-generative-ai-features.html",
+          "title": "Creative Cloud Generative AI features",
+          "content_read": "article_text",
+          "coverage": "Generative Expand classification and variable plan/model conditions."
+        },
+        {
+          "url": "https://helpx.adobe.com/photoshop/desktop/generative-ai/frequently-asked-questions-about-generative-ai-features.html",
+          "title": "Generative AI features FAQ",
+          "content_read": "article_text",
+          "coverage": "Internet and layered-output prerequisites; do not hardcode older cost or resolution statements."
+        }
+      ],
+      "guidance_origin": "Adobe documents the crop/expand sequence. Minimum intervention, preservation requirements and authenticity checks are application guidance. No live generation was attempted.",
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "test_status": "not_run",
+      "mcp": {
+        "feasibility": "partial_native_exact_geometry_unavailable",
+        "tools": [
+          "photoshop_get_capabilities",
+          "photoshop_generative_expand",
+          "photoshop_get_preview"
+        ],
+        "parameter_constraints": {
+          "prompt": "Optional prompt defaults to extend the background naturally; empty strings are replaced by that phrase. Native blank prompting is not exposed.",
+          "direction": "Only left,right,top,bottom,all are accepted.",
+          "unexposed_controls": "No expansion amount, per-edge pixel amounts, target width/height, aspect ratio, original placement, model, variation or budget parameter. The exact4:5 Adobe example cannot be promised via this tool alone.",
+          "implementation": "Invokes one of generativeExpand/expandCanvas/generativeCanvasExpand with prompt+direction. It does not explicitly resize the canvas or set a crop boundary beforehand.",
+          "wait": "Completion uses the same history-count heuristic and may report ok:true while wait.completed:false; inspect resulting geometry and pixels before reporting success."
+        },
+        "side_effects": [
+          "May enlarge the canvas with generated content and consume credits; all output dimensions and preserved source content need post-inspection.",
+          "Do not use to replace a simple resize or reconstruct missing authentic product details.",
+          "Any exact-geometry script/manual lane would require its own implementation, authorization and disposable-copy validation; no such lane was validated here."
+        ],
+        "sources_inspected": [
+          "src/tools/generative-tools.ts:218",
+          "src/tools/generative/_shared.ts",
+          "src/api/extendscript.ts:3995",
+          "src/platform/capabilities.ts"
+        ],
+        "capability_observed": {
+          "generative_expand": true,
+          "generative_fill_guard_used_by_handler": true,
+          "actual_generation": "not_run",
+          "account_and_credits": "not_verified"
+        }
+      },
+      "runtime": {
+        "status": "not_run",
+        "checked_on": "2026-11-09",
+        "reason": "Not executed in the initial development batch; no runtime validation is bundled."
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    },
+    {
+      "id": "resize-export",
+      "title": "Resize or set print resolution, then export only as required",
+      "theme": "export",
+      "problem": "An image must meet specified pixel dimensions, a physical output size or a delivery format without unnecessary visual changes.",
+      "when_to_use": [
+        "Resize for an explicit screen/web dimension, or set physical-size/PPI metadata for a defined print workflow.",
+        "Export a separate delivery copy in the required format and color space."
+      ],
+      "avoid": [
+        "Do not add retouch, color grading, sharpening or effects to a resize-only request.",
+        "Do not claim extra captured detail after upsampling, or prescribe 300 PPI to every large-format print."
+      ],
+      "preconditions": [
+        "Read source pixel dimensions, profile and target requirements.",
+        "Distinguish changing pixel count, changing print-size/PPI allocation and adding canvas space; they are different operations."
+      ],
+      "limits": [
+        "PPI metadata does not determine on-screen pixel dimensions.",
+        "Resampling adds or removes pixels; substantial enlargement may soften detail. The tutorial's 300-PPI advice is a typical desktop inkjet example, not a universal mural specification."
+      ],
+      "essential_steps": [
+        "For pixel resizing, link width and height, use pixel units and enable Resample; enter the needed dimension and verify the result.",
+        "For print-size/PPI allocation without changing pixel count, disable Resample and set the physical size or resolution intentionally.",
+        "Save/export a separate version when the original must remain untouched.",
+        "If delivery requires Export As, choose the needed format and quality; convert to and embed sRGB only when appropriate for that delivery."
+      ],
+      "adapt_parameters": [
+        "Target pixels or physical units; aspect-ratio policy; resampling method; PPI; format; JPEG quality; transparency; output profile; profile embedding."
+      ],
+      "visual_check": [
+        "Verify output pixel dimensions, aspect ratio, profile and transparency as applicable.",
+        "Inspect fine detail, edges and text in the actual exported file. Check the file opens; a successful export response alone does not validate visual quality."
+      ],
+      "adobe_evidence": {
+        "url": "https://www.adobe.com/learn/photoshop/web/image-resizing-basics",
+        "title": "Change the image size",
+        "checked_on": "2026-11-09",
+        "content_read": "transcript",
+        "coverage": "Resize and resolution chapters read, including link proportions, Resample, PPI meaning and preserving the original. Other chapters not ingested into this card."
+      },
+      "supplementary_sources": [
+        {
+          "url": "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/export-settings-and-export-location-preferences.html",
+          "title": "Export settings and export location preferences",
+          "content_read": "article_text",
+          "coverage": "Export sizing, quality, transparency and sRGB conversion/profile embedding sections."
+        }
+      ],
+      "guidance_origin": "Adobe documents pixel/PPI mechanics and export options. Choice of print specification belongs to the actual printer/viewing use case; no fixed quality guarantee is inferred.",
+      "mcp_status": "Implementation inspected against the recorded upstream version; refresh live tools before editing.",
+      "test_status": "historical_report_not_reproduced_here",
+      "mcp": {
+        "feasibility": "native_pixel_resize_and_export_partial_print_profile_controls",
+        "tools": [
+          "photoshop_resize_image",
+          "photoshop_export_as",
+          "photoshop_save_document",
+          "photoshop_recipe_prepare_for_web",
+          "photoshop_recipe_export_social_variants",
+          "photoshop_execute_script"
+        ],
+        "parameter_constraints": {
+          "pixel_resize": "width,height>=1px required; BICUBIC resampling always, current resolution retained. No constrain-ratio toggle: calculate the second dimension proportionally when appropriate. No interpolation choice or resample:false/PPI-only control.",
+          "export_as": "path required, PNG/JPEG/WEBP/AVIF, quality0–100(default80), optional artboard_id; no width/height/profile/conversion/embedding/transparency parameter. PNG/JPEG use Save for Web defaults; they do not explicitly set conversion or profile embedding.",
+          "save_document": "path required; PSD/JPEG/PNG; JPEGquality1–12(default8). PSD/JPEG save snippets embed existing profile but do not convert color space.",
+          "web_recipe": "max_dimension_px64–8192(default2048), jpeg/png, quality1–12(default9), optional path. It duplicates a merged source, attempts sRGB conversion, downscales only if larger, then attempts fixed UnsharpMask30%,0.6px,0. Source unchanged; both profile and sharpen errors are swallowed.",
+          "social_recipe": "Requested supported platform slugs only. Center-crops and resizes; does not recompose important subjects. Not suitable when crop would remove essential content.",
+          "missing_controls": "Resolution-only changes with no resampling, chosen interpolation, exact print setup or explicit profile handling need an inspected script/manual path and separate validation."
+        },
+        "side_effects": [
+          "resize_image resamples the whole document and all layers; work on a copy where original preservation is required.",
+          "Web recipe includes sharpening even if not requested and may succeed despite failed profile conversion. Do not use it for resize-only or unchanged-pixel export.",
+          "export_as writes a copy but may overwrite the requested path. Reopen/inspect actual exported dimensions, profile, transparency and visual quality; a tool response alone is insufficient.",
+          "Artboard exports use duplicate+crop; WEBP/AVIF rely on available native save option constructors, not just version labels."
+        ],
+        "sources_inspected": [
+          "src/api/extendscript.ts:242",
+          "src/api/extendscript.ts:1340",
+          "src/api/extendscript.ts:1609",
+          "src/api/extendscript.ts:4823",
+          "src/tools/export-tools.ts",
+          "src/tools/recipes/prepare-for-web.ts",
+          "src/tools/recipes/export-social-variants.ts"
+        ]
+      },
+      "runtime": {
+        "status": "historical_report_not_reproduced_here",
+        "reported_status": "validated_screen_resize_export_paths",
+        "reported_checked_on": "2026-11-09",
+        "reported_environment": {
+          "photoshop": "27.11.0",
+          "mcp": "1.7.37",
+          "commit": "ba36d8f2a28ecc56686568f3c0191e388336d498"
+        },
+        "observations": [
+          "1920×800 resized to960×400 without a style change; PNG opens at960×400.",
+          "Explicit web-optimization recipe exported640×267 JPEG with embedded ICC; source document preview stayed identical."
+        ],
+        "limits": [
+          "Atomic PNG export has no ICC in this test; do not promise profile conversion/embedding.",
+          "Web recipe includes sharpening; it is not used merely for resizing.",
+          "PPI-only changes, CMYK/print conversion, PDF and enlargement detail were not tested.",
+          "Historical development summary only. Raw logs, local paths and fixture files are not distributed; installation does not run or certify this operation."
+        ]
+      },
+      "adobe_documentation_status": "content_read; see source coverage and platform limits",
+      "mapping_checked_on": "2026-11-09"
+    }
+  ]
+}

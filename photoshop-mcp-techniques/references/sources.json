@@ -1,0 +1,570 @@
+{
+  "checked_on": "2026-11-09",
+  "unique_urls": 40,
+  "sources": {
+    "https://www.adobe.com/learn/photoshop/web/rectangular-marquee-tool": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/rectangular-marquee-tool",
+        "status": "content_read",
+        "mode": "transcript_and_written_summary",
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/types-selection-tools": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/types-selection-tools",
+        "status": "content_read",
+        "mode": "transcript_and_written_summary",
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/select-subject-one-click": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/select-subject-one-click",
+        "status": "content_read",
+        "mode": "transcript_and_written_summary",
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/make-precise-selections-in-select-mask": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/make-precise-selections-in-select-mask",
+        "status": "content_read",
+        "mode": "transcript_and_written_summary",
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/select-hair": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/select-hair",
+        "status": "content_read",
+        "mode": "written_article",
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/combine-image-layer-mask": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/combine-image-layer-mask",
+        "status": "content_read",
+        "mode": "transcript_and_written_summary",
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/layer-mask": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/layer-mask",
+        "status": "content_read",
+        "mode": "transcript_and_written_summary",
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/organize-layers-with-layer-groups": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/organize-layers-with-layer-groups",
+        "status": "content_read",
+        "mode": "transcript_and_written_summary",
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/adjustment-layer": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/adjustment-layer",
+        "status": "content_read",
+        "mode": "written_article",
+        "video_played": false
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/make-selections/get-started-selections/make-selections-with-marquee-tools.html": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/get-started-selections/make-selections-with-marquee-tools.html",
+        "status": "content_read",
+        "mode": "desktop_help_article",
+        "video_played": false
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/make-selections/automatic-color-based-selections/detect-subject-using-select-subject.html": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/make-selections/automatic-color-based-selections/detect-subject-using-select-subject.html",
+        "status": "content_read",
+        "mode": "desktop_help_article",
+        "video_played": false
+      }
+    ],
+    "https://helpx.adobe.com/uk/photoshop/desktop/create-manage-layers/transform-manipulate-layers/group-and-ungroup-layers.html": [
+      {
+        "url": "https://helpx.adobe.com/uk/photoshop/desktop/create-manage-layers/transform-manipulate-layers/group-and-ungroup-layers.html",
+        "status": "content_read",
+        "mode": "desktop_help_article",
+        "video_played": false
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/create-and-manage-clipping-masks.html": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/create-and-manage-clipping-masks.html",
+        "status": "content_read",
+        "mode": "desktop_help_article",
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/blend-two-images-gradient": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/blend-two-images-gradient",
+        "status": "partial_content_read",
+        "mode": "accessible_transcript_sections",
+        "video_played": false,
+        "remaining": "Full middle transcript not read; not used as a primary card source."
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/brighten-photo-basics": [
+      {
+        "id": "cr-learn-exposure",
+        "title": "Make an image brighter or darker",
+        "url": "https://www.adobe.com/learn/photoshop/web/brighten-photo-basics",
+        "source_kind": "learn_article",
+        "platform": "desktop",
+        "content_read": "article_text",
+        "headings_read": [
+          "Exposure correction workflows",
+          "Adjust exposure in just part of a photo",
+          "Dodge and burn"
+        ],
+        "notes": "Read article body; adjustment layers and masks are explicit.",
+        "checked_on": "2026-11-09",
+        "status": "content_read",
+        "retrieval_channel": "web_tool",
+        "raw_content_retained": false,
+        "video_stream_viewed": false,
+        "research_notes_sha256": "6cab2cfd3a2be97b1d4474dd8953faaaf26296e2bc0e6c389e7e343a77d8fe52",
+        "hash_scope": "Research notes and metadata only, not raw page content; browsing evidence is the source URL and read-coverage record."
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/adjust-color-and-tone-with-curves.html": [
+      {
+        "id": "cr-help-curves",
+        "title": "Adjust color and tone with Curves",
+        "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/adjust-color-and-tone-with-curves.html",
+        "source_kind": "desktop_help",
+        "platform": "desktop",
+        "content_read": "article_text",
+        "headings_read": [
+          "How the Curves graph works",
+          "Tonal zones and control points",
+          "Channel-specific adjustments",
+          "Black and white point mapping"
+        ],
+        "notes": "Read graph, tonal-zone, channel, and endpoint sections; endpoint contradiction quarantined.",
+        "checked_on": "2026-11-09",
+        "status": "content_read",
+        "retrieval_channel": "web_tool",
+        "raw_content_retained": false,
+        "video_stream_viewed": false,
+        "research_notes_sha256": "c1d3889bb821cb40ca71541f23635462d361bd65c4f718f15ecb7275ddbc5ada",
+        "hash_scope": "Research notes and metadata only, not raw page content; browsing evidence is the source URL and read-coverage record."
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/remove-unwanted-color-cast": [
+      {
+        "id": "cr-learn-color-cast",
+        "title": "Correct an unwanted color cast",
+        "url": "https://www.adobe.com/learn/photoshop/web/remove-unwanted-color-cast",
+        "source_kind": "learn_tutorial",
+        "platform": "desktop",
+        "content_read": "transcript",
+        "headings_read": [
+          "Correct a color cast with a Levels Eyedropper",
+          "Add a Levels adjustment layer",
+          "Choose Levels settings"
+        ],
+        "notes": "Visible full transcript and recap read; video stream not viewed.",
+        "checked_on": "2026-11-09",
+        "status": "content_read",
+        "retrieval_channel": "web_tool",
+        "raw_content_retained": false,
+        "video_stream_viewed": false,
+        "research_notes_sha256": "1cd5fb23ee823b11e2344a1f03e19b38e6e230866d0eaf91748280ee92b0636c",
+        "hash_scope": "Research notes and metadata only, not raw page content; browsing evidence is the source URL and read-coverage record."
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/apply-color-balance-and-photo-filter-adjustments.html": [
+      {
+        "id": "cr-help-color-balance",
+        "title": "Apply Color Balance adjustment in Photoshop",
+        "url": "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/apply-color-balance-and-photo-filter-adjustments.html",
+        "source_kind": "desktop_help",
+        "platform": "desktop",
+        "content_read": "written_steps",
+        "headings_read": [
+          "Apply Color Balance as an adjustment layer"
+        ],
+        "notes": "Read entire task body, excluding global navigation.",
+        "checked_on": "2026-11-09",
+        "status": "content_read",
+        "retrieval_channel": "web_tool",
+        "raw_content_retained": false,
+        "video_stream_viewed": false,
+        "research_notes_sha256": "485e78e284858617813ea61a252f3bc128b98ceb346477d0837bce3b7c429df5",
+        "hash_scope": "Research notes and metadata only, not raw page content; browsing evidence is the source URL and read-coverage record."
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/make-colors-pop-in-photo": [
+      {
+        "id": "cr-learn-color-pop",
+        "title": "Make colors pop in a photo",
+        "url": "https://www.adobe.com/learn/photoshop/web/make-colors-pop-in-photo",
+        "source_kind": "learn_tutorial",
+        "platform": "desktop",
+        "content_read": "transcript",
+        "headings_read": [
+          "Using vibrance to boost color while protecting skin tones",
+          "Targeting specific colors with hue and saturation",
+          "Refining color changes with adjustment layer masks"
+        ],
+        "notes": "Visible full transcript and written steps read; example slider values are not defaults.",
+        "checked_on": "2026-11-09",
+        "status": "content_read",
+        "retrieval_channel": "web_tool",
+        "raw_content_retained": false,
+        "video_stream_viewed": false,
+        "research_notes_sha256": "8712e82349561055080c1a9cec011588d0f5b24cf3d599d6e0661df72c40d7d2",
+        "hash_scope": "Research notes and metadata only, not raw page content; browsing evidence is the source URL and read-coverage record."
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/edit-photos-adjustment-layers": [
+      {
+        "id": "cr-learn-web-adjustments",
+        "title": "Make your photos look great with adjustment layers",
+        "url": "https://www.adobe.com/learn/photoshop/web/edit-photos-adjustment-layers",
+        "source_kind": "learn_tutorial",
+        "platform": "web",
+        "content_read": "transcript",
+        "headings_read": [
+          "Adjustment layers",
+          "Selective color adjustment",
+          "Adjustment masks"
+        ],
+        "notes": "Visible transcript body read; web-specific clip control and cloud autosave are not desktop MCP claims.",
+        "checked_on": "2026-11-09",
+        "status": "content_read",
+        "retrieval_channel": "web_tool",
+        "raw_content_retained": false,
+        "video_stream_viewed": false,
+        "research_notes_sha256": "ea47069664d61882d8e3458b68679b43b5ba9ce2ddfc9c6b6eeefc5878b31a14",
+        "hash_scope": "Research notes and metadata only, not raw page content; browsing evidence is the source URL and read-coverage record."
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/remove-objects-from-your-photos": [
+      {
+        "id": "cr-learn-web-retouch",
+        "title": "Remove unwanted objects from your photos",
+        "url": "https://www.adobe.com/learn/photoshop/web/remove-objects-from-your-photos",
+        "source_kind": "learn_tutorial",
+        "platform": "web",
+        "content_read": "transcript",
+        "headings_read": [
+          "Remove small spots with the Spot Healing Brush tool",
+          "Remove larger flaws with the Healing Brush tool",
+          "Copy detail with the Clone Stamp tool"
+        ],
+        "notes": "Retouch transcript and written sections read; web Content-Aware Fill uses a duplicate raster layer.",
+        "checked_on": "2026-11-09",
+        "status": "content_read",
+        "retrieval_channel": "web_tool",
+        "raw_content_retained": false,
+        "video_stream_viewed": false,
+        "research_notes_sha256": "39a7c805925fcda6e9adffd914207b3816b1d348683bdf2e9efce9bcce5b0917",
+        "hash_scope": "Research notes and metadata only, not raw page content; browsing evidence is the source URL and read-coverage record."
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/remove-small-spots-with-the-spot-healing-brush.html": [
+      {
+        "id": "cr-help-spot-healing",
+        "title": "Remove small spots with the Spot Healing Brush",
+        "url": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/remove-small-spots-with-the-spot-healing-brush.html",
+        "source_kind": "desktop_help",
+        "platform": "desktop",
+        "content_read": "written_steps",
+        "headings_read": [
+          "Remove spots from your image"
+        ],
+        "notes": "Read task body including separate empty-layer tip.",
+        "checked_on": "2026-11-09",
+        "status": "content_read",
+        "retrieval_channel": "web_tool",
+        "raw_content_retained": false,
+        "video_stream_viewed": false,
+        "research_notes_sha256": "a5f8705ba92312a841babb4048ddfa553907c4682b9cad8fe1958baaff9034fa",
+        "hash_scope": "Research notes and metadata only, not raw page content; browsing evidence is the source URL and read-coverage record."
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/repair-retouch/heal-clone/retouch-images-with-the-clone-stamp-tool.html": [
+      {
+        "id": "cr-help-clone-stamp",
+        "title": "Retouch images with the Clone Stamp tool",
+        "url": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/heal-clone/retouch-images-with-the-clone-stamp-tool.html",
+        "source_kind": "desktop_help",
+        "platform": "desktop",
+        "content_read": "written_steps",
+        "headings_read": [
+          "Retouch images with the Clone Stamp tool"
+        ],
+        "notes": "Read task body including mode, opacity, flow, alignment, sample scope, and adjustment-layer restriction.",
+        "checked_on": "2026-11-09",
+        "status": "content_read",
+        "retrieval_channel": "web_tool",
+        "raw_content_retained": false,
+        "video_stream_viewed": false,
+        "research_notes_sha256": "fe5265f0277640d16bb48799d8d28a325fb1d6ddbf458bcb3d3a0a55c5c503b3",
+        "hash_scope": "Research notes and metadata only, not raw page content; browsing evidence is the source URL and read-coverage record."
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/crop-straighten-to-improve-composition": [
+      {
+        "id": "cr-learn-crop",
+        "title": "How to crop a photo",
+        "url": "https://www.adobe.com/learn/photoshop/web/crop-straighten-to-improve-composition",
+        "source_kind": "learn_tutorial",
+        "platform": "desktop",
+        "content_read": "transcript",
+        "headings_read": [
+          "Setting crop shape, aspect ratios, and straightening",
+          "Positioning the image using composition guides",
+          "Using non-destructive cropping and finalizing the crop"
+        ],
+        "notes": "Visible full transcript and written recap read.",
+        "checked_on": "2026-11-09",
+        "status": "content_read",
+        "retrieval_channel": "web_tool",
+        "raw_content_retained": false,
+        "video_stream_viewed": false,
+        "research_notes_sha256": "2ce06b21aaf7e18487b65164b2afd252078be06cb15f2ef8448f2ce97bb9236f",
+        "hash_scope": "Research notes and metadata only, not raw page content; browsing evidence is the source URL and read-coverage record."
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/photoshop-perspective-warp": [
+      {
+        "id": "cr-learn-perspective",
+        "title": "Adjust perspective in a photo",
+        "url": "https://www.adobe.com/learn/photoshop/web/photoshop-perspective-warp",
+        "source_kind": "learn_tutorial",
+        "platform": "desktop",
+        "content_read": "transcript",
+        "headings_read": [
+          "Change the viewpoint of a photograph",
+          "View transcript"
+        ],
+        "notes": "Full visible transcript read in two ranges; legacy wording is not a version capability check.",
+        "checked_on": "2026-11-09",
+        "status": "content_read",
+        "retrieval_channel": "web_tool",
+        "raw_content_retained": false,
+        "video_stream_viewed": false,
+        "research_notes_sha256": "44f2b04943a6e061053edd1800a265f67ded92f938aa964f1e245feb941c896a",
+        "hash_scope": "Research notes and metadata only, not raw page content; browsing evidence is the source URL and read-coverage record."
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/transform-images-shapes-and-paths.html": [
+      {
+        "id": "cr-help-free-transform",
+        "title": "Transform images, shapes, and paths",
+        "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/transform-images-shapes-and-paths.html",
+        "source_kind": "desktop_help",
+        "platform": "desktop",
+        "content_read": "written_steps",
+        "headings_read": [
+          "Enter Free Transform mode",
+          "Apply transformations",
+          "Adjust the reference point",
+          "Apply warp transformations",
+          "Commit or cancel the transformation"
+        ],
+        "notes": "Full task body read, including proportional scaling and Smart Object preservation.",
+        "checked_on": "2026-11-09",
+        "status": "content_read",
+        "retrieval_channel": "web_tool",
+        "raw_content_retained": false,
+        "video_stream_viewed": false,
+        "research_notes_sha256": "3666a6dc3143eb486ec0f936739100454ed895d48c84a09fcb4ceef039d160fd",
+        "hash_scope": "Research notes and metadata only, not raw page content; browsing evidence is the source URL and read-coverage record."
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/transform-manipulate-reshape/adjust-scale-rotation-and-perspective.html": [
+      {
+        "id": "cr-help-transform-types",
+        "title": "Adjust scale, rotation, and perspective",
+        "url": "https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/transform-manipulate-reshape/adjust-scale-rotation-and-perspective.html",
+        "source_kind": "desktop_help",
+        "platform": "desktop",
+        "content_read": "written_steps",
+        "headings_read": [
+          "Adjust scale, rotation, and perspective"
+        ],
+        "notes": "Entire concise task body read; distinguishes available desktop transform types, not MCP support.",
+        "checked_on": "2026-11-09",
+        "status": "content_read",
+        "retrieval_channel": "web_tool",
+        "raw_content_retained": false,
+        "video_stream_viewed": false,
+        "research_notes_sha256": "ae21676a926ddbc52ab6cd182daa2812c2d6bd4fc0d1a5baf04603799d246ae5",
+        "hash_scope": "Research notes and metadata only, not raw page content; browsing evidence is the source URL and read-coverage record."
+      }
+    ],
+    "https://www.adobe.com/uk/learn/photoshop": [
+      {
+        "url": "https://www.adobe.com/uk/learn/photoshop",
+        "status": "catalog_first_page_read",
+        "method": "web text retrieval",
+        "checked_on": "2026-11-09",
+        "coverage": "Topic filters, featured/listed tutorials and pagination controls. Pagination displayed a 20 button, but pages 2 onward and total live catalog were not verified."
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/applying-filters-basics": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/applying-filters-basics",
+        "status": "sections_read",
+        "content_read": "transcript",
+        "sections": [
+          "Part 1 recap",
+          "Part 2 full Smart Filters transcript and recap"
+        ],
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/products/photoshop/smart-objects.html": [
+      {
+        "url": "https://www.adobe.com/products/photoshop/smart-objects.html",
+        "status": "article_read",
+        "content_read": "article_text",
+        "sections": [
+          "Create embedded Smart Objects"
+        ],
+        "video_played": false
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/apply-and-manage-smart-filters.html": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/apply-and-manage-smart-filters.html",
+        "status": "article_read",
+        "content_read": "article_text",
+        "sections": [
+          "Smart Filters",
+          "How Smart Filters function",
+          "Working with Smart Filter properties",
+          "Persistence and conversion"
+        ],
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/add-text-to-image": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/add-text-to-image",
+        "status": "transcript_read",
+        "content_read": "transcript",
+        "sections": [
+          "Full transcript and written recap"
+        ],
+        "video_played": false
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/text-typography/get-started-with-text/add-text.html": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/text-typography/get-started-with-text/add-text.html",
+        "status": "article_read",
+        "content_read": "article_text",
+        "sections": [
+          "Point text",
+          "Paragraph text"
+        ],
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/the-unlock-add-to-a-scene-with-generative-fill": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/the-unlock-add-to-a-scene-with-generative-fill",
+        "status": "written_steps_read_video_unassessed",
+        "content_read": "written_steps",
+        "sections": [
+          "Start with AI",
+          "Choose your favorite",
+          "Export and share"
+        ],
+        "video_played": false,
+        "transcript": "not_available_explicit_on_all_three_clips"
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/edit-images-with-generative-fill.html": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/edit-images-with-generative-fill.html",
+        "status": "article_read",
+        "content_read": "article_text",
+        "sections": [
+          "Desktop Generative Fill steps",
+          "Current model list",
+          "Model retirement note"
+        ],
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/expand-image-generative-fill": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/expand-image-generative-fill",
+        "status": "transcript_read",
+        "content_read": "transcript",
+        "sections": [
+          "Full transcript"
+        ],
+        "video_played": false
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/generative-ai/frequently-asked-questions-about-generative-ai-features.html": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/generative-ai/frequently-asked-questions-about-generative-ai-features.html",
+        "status": "article_read",
+        "content_read": "article_text",
+        "sections": [
+          "Access",
+          "Connectivity",
+          "Layers",
+          "Credit and resolution claims compared against newer Help"
+        ],
+        "video_played": false
+      }
+    ],
+    "https://helpx.adobe.com/creative-cloud/apps/generative-ai/creative-cloud-generative-ai-features.html": [
+      {
+        "url": "https://helpx.adobe.com/creative-cloud/apps/generative-ai/creative-cloud-generative-ai-features.html",
+        "status": "sections_read",
+        "content_read": "article_text",
+        "sections": [
+          "Standard and premium features",
+          "Photoshop row"
+        ],
+        "video_played": false
+      }
+    ],
+    "https://www.adobe.com/learn/photoshop/web/image-resizing-basics": [
+      {
+        "url": "https://www.adobe.com/learn/photoshop/web/image-resizing-basics",
+        "status": "sections_read",
+        "content_read": "transcript",
+        "sections": [
+          "Resize image",
+          "Set resolution"
+        ],
+        "video_played": false
+      }
+    ],
+    "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/export-settings-and-export-location-preferences.html": [
+      {
+        "url": "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/export-settings-and-export-location-preferences.html",
+        "status": "sections_read",
+        "content_read": "article_text",
+        "sections": [
+          "File settings",
+          "Image size",
+          "Color space/profile"
+        ],
+        "video_played": false
+      }
+    ]
+  }
+}

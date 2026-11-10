@@ -1,0 +1,1094 @@
+{
+  "checked_on": "2026-11-09",
+  "server": {
+    "name": "photoshop-mcp",
+    "version": "1.7.37"
+  },
+  "authority": "Live discovery and initialize instructions; snapshot must be rechecked in future sessions. Recipe descriptions are upstream claims, not test validation.",
+  "atomic_tools": 111,
+  "recipes": 17,
+  "prompts": 24,
+  "tool_names": [
+    "photoshop_ping",
+    "photoshop_submit_feedback",
+    "photoshop_get_version",
+    "photoshop_create_document",
+    "photoshop_get_document_info",
+    "photoshop_list_documents",
+    "photoshop_set_active_document",
+    "photoshop_save_document",
+    "photoshop_close_document",
+    "photoshop_create_layer",
+    "photoshop_delete_layer",
+    "photoshop_create_text_layer",
+    "photoshop_fill_layer",
+    "photoshop_fill_gradient",
+    "photoshop_get_layers",
+    "photoshop_select_layer_by_name",
+    "photoshop_resize_image",
+    "photoshop_crop_document",
+    "photoshop_place_image",
+    "photoshop_open_image",
+    "photoshop_convert_to_smart_object",
+    "photoshop_replace_smart_object_contents",
+    "photoshop_edit_smart_object_contents",
+    "photoshop_create_smart_object_via_copy",
+    "photoshop_fit_layer_to_document",
+    "photoshop_scale_layer",
+    "photoshop_move_layer",
+    "photoshop_rotate_layer",
+    "photoshop_rasterize_layer",
+    "photoshop_set_layer_opacity",
+    "photoshop_set_layer_blend_mode",
+    "photoshop_set_layer_visibility",
+    "photoshop_set_layer_locked",
+    "photoshop_rename_layer",
+    "photoshop_duplicate_layer",
+    "photoshop_merge_visible_layers",
+    "photoshop_flatten_image",
+    "photoshop_apply_gaussian_blur",
+    "photoshop_apply_sharpen",
+    "photoshop_apply_noise",
+    "photoshop_apply_motion_blur",
+    "photoshop_apply_high_pass",
+    "photoshop_apply_smart_blur",
+    "photoshop_adjust_brightness_contrast",
+    "photoshop_adjust_hue_saturation",
+    "photoshop_auto_levels",
+    "photoshop_auto_contrast",
+    "photoshop_adjust_curves",
+    "photoshop_desaturate",
+    "photoshop_invert",
+    "photoshop_list_fonts",
+    "photoshop_install_font",
+    "photoshop_set_text_font",
+    "photoshop_set_text_color",
+    "photoshop_set_text_alignment",
+    "photoshop_update_text_content",
+    "photoshop_set_text_style",
+    "photoshop_set_text_ranges",
+    "photoshop_get_selection_bounds",
+    "photoshop_select_ellipse",
+    "photoshop_expand_selection",
+    "photoshop_contract_selection",
+    "photoshop_feather_selection",
+    "photoshop_save_selection",
+    "photoshop_select_rectangle",
+    "photoshop_select_all",
+    "photoshop_deselect",
+    "photoshop_invert_selection",
+    "photoshop_create_layer_mask",
+    "photoshop_delete_layer_mask",
+    "photoshop_apply_layer_mask",
+    "photoshop_select_subject",
+    "photoshop_content_aware_fill",
+    "photoshop_apply_gradient_mask",
+    "photoshop_create_clipping_mask",
+    "photoshop_release_clipping_mask",
+    "photoshop_play_action",
+    "photoshop_execute_script",
+    "photoshop_undo",
+    "photoshop_redo",
+    "photoshop_get_history",
+    "photoshop_move_layer_to_position",
+    "photoshop_move_layer_to_top",
+    "photoshop_move_layer_to_bottom",
+    "photoshop_move_layer_up",
+    "photoshop_move_layer_down",
+    "photoshop_get_state",
+    "photoshop_get_preview",
+    "photoshop_get_capabilities",
+    "photoshop_generative_fill",
+    "photoshop_generative_remove",
+    "photoshop_generative_expand",
+    "photoshop_generative_upscale",
+    "photoshop_sky_replacement",
+    "photoshop_generate_image",
+    "photoshop_neural_filter",
+    "photoshop_apply_layer_style",
+    "photoshop_apply_lut",
+    "photoshop_adjust_vibrance",
+    "photoshop_adjust_exposure",
+    "photoshop_apply_photo_filter",
+    "photoshop_apply_gradient_map",
+    "photoshop_list_datasets",
+    "photoshop_import_datasets",
+    "photoshop_generate_from_datasets",
+    "photoshop_image_stack",
+    "photoshop_export_as",
+    "photoshop_list_artboards",
+    "photoshop_create_artboard",
+    "photoshop_set_active_artboard",
+    "photoshop_export_artboards",
+    "photoshop_recipe_remove_background",
+    "photoshop_recipe_enhance_portrait",
+    "photoshop_recipe_prepare_for_web",
+    "photoshop_recipe_export_social_variants",
+    "photoshop_recipe_apply_color_grade",
+    "photoshop_recipe_frequency_separation",
+    "photoshop_recipe_batch_mockup_replace",
+    "photoshop_recipe_organize_layers",
+    "photoshop_recipe_gradient_fade",
+    "photoshop_recipe_sky_blend",
+    "photoshop_recipe_dodge_burn",
+    "photoshop_recipe_remove_distraction",
+    "photoshop_recipe_split_carousel",
+    "photoshop_recipe_batch_watermark",
+    "photoshop_recipe_passport_photo",
+    "photoshop_recipe_csv_to_cards",
+    "photoshop_recipe_sticker_outline"
+  ],
+  "recipe_interfaces": [
+    {
+      "name": "photoshop_recipe_remove_background",
+      "description": "THE tool for \"remove background\" / \"arka planı sil\" / cut out / isolate subject. Call this once and stop. Unlocks a locked Background layer, then runs Photoshop native Remove Background (Select Subject / Color Range only if native is unavailable). One undo reverts everything.\n\nUse when: the user wants the background gone. Hair, busy interiors, product shots — still this tool.\nDo NOT rasterize, duplicate, hide layers, select_subject, create_layer_mask, or execute_script instead of this recipe.\n\nReturns: { ok, summary, undo_history_states_consumed, details.method = remove_background | remove_layer_background | select_subject | color_range_fallback }.\n\nPreconditions: an active document. Native Remove Background needs a current Photoshop; Select Subject fallback needs PS ≥ 23.\nSide effects: may unlock/rename the Background layer; attaches a pixel mask; no pixels destroyed; one undo reverts everything.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "feather_px": {
+            "type": "number",
+            "description": "Edge feather in pixels (0-20). 0 = hard edge (default for product shots), 1-3 = soft edge for portraits.",
+            "minimum": 0,
+            "maximum": 20,
+            "default": 0
+          },
+          "keep_shadow": {
+            "type": "boolean",
+            "description": "Reserved for a future iteration; currently recorded in the response but no shadow layer is created yet.",
+            "default": false
+          },
+          "use_generative": {
+            "type": "boolean",
+            "description": "After masking, run generative edge cleanup on inverted background selection (default false)",
+            "default": false
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_enhance_portrait",
+      "description": "Set up a non-destructive portrait enhancement: duplicates the active layer, builds a frequency separation pair (low/high) for skin smoothing, and adds an auto-tone curves adjustment on top. Grouped as \"Enhance Portrait\" and reversible with one undo.\n\nUsers often say: smooth skin, retouch portrait, fix blemishes, clean up face.\n\nUse when: the user asks to \"enhance\", \"retouch\", \"clean up\" or \"smooth\" a portrait photo and is happy with a baseline that they can further tweak interactively.\nDo NOT use when: the user wants destructive, final edits — recommend manual frequency separation work via photoshop_recipe_frequency_separation instead so they can paint by hand.\n\nReturns: { ok, summary, details: { intensity, radius_px, group_name } }.\n\nPreconditions: active document with a NORMAL or background-converted raster layer.\nSide effects: appends one layer group of 2-3 layers above the active layer; original layer untouched.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "intensity": {
+            "type": "string",
+            "description": "Retouch strength: low (subtle), medium (default), high (heavier smoothing).",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "default": "medium"
+          },
+          "skin_smoothing": {
+            "type": "boolean",
+            "description": "Whether to build the frequency separation pair. When false, only the auto-tone curves are added.",
+            "default": true
+          },
+          "use_neural_skin": {
+            "type": "boolean",
+            "description": "Apply Neural Filter skin smoothing via UXP bridge before frequency separation (default false)",
+            "default": false
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_prepare_for_web",
+      "description": "Export a web-optimized version of the active document: duplicate, convert to sRGB, downscale longest edge, sharpen for screen, save to disk. The source PSD stays untouched.\n\nUse when: the user wants a shareable JPEG/PNG sized for the web from the current artwork.\nDo NOT use when: the user wants multiple platform-specific exports — use photoshop_recipe_export_social_variants. Do NOT call photoshop_save_document afterwards; this recipe already wrote the file.\n\nReturns: { ok, summary, output_paths, undo_history_states_consumed }.\n\nPreconditions: active document. Format is jpeg (default) or png.\nSide effects: writes one file to disk; the source document is unchanged.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "max_dimension_px": {
+            "type": "number",
+            "description": "Longest-edge pixel cap (default 2048). Min 64, max 8192.",
+            "minimum": 64,
+            "maximum": 8192,
+            "default": 2048
+          },
+          "format": {
+            "type": "string",
+            "description": "Output format: jpeg (default) or png.",
+            "enum": [
+              "jpeg",
+              "png"
+            ],
+            "default": "jpeg"
+          },
+          "quality": {
+            "type": "number",
+            "description": "JPEG quality on the Photoshop 1-12 scale. Default 9. Ignored for png.",
+            "minimum": 1,
+            "maximum": 12,
+            "default": 9
+          },
+          "path": {
+            "type": "string",
+            "description": "Optional output path. Absolute paths used as-is. Relative paths resolve under ~/.photoshop-mcp/exports[/<chat-id>]. Omit to auto-generate."
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_export_social_variants",
+      "description": "Render one JPEG per requested social-media platform from the active document. Each variant is center-cropped/resized to the platform spec and saved to disk.\n\nUse when: the user wants multi-platform deliverables in one shot.\nDo NOT use when: only one export is needed (use photoshop_recipe_prepare_for_web instead) or when platforms differ by content rather than crop (recipe does not change content, only frame).\n\nReturns: { ok, summary, output_paths, details: { variants } }.\n\nPreconditions: active document. Aspect ratios that differ from the source result in a center-crop (no padding).\nSide effects: writes one file per platform; source unchanged.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "platforms": {
+            "type": "array",
+            "description": "Slugs of platforms to export. Known: instagram_post, instagram_story, instagram_reel, x_post, x_header, facebook_post, facebook_cover, linkedin_post, linkedin_banner, youtube_thumbnail, tiktok_vertical, pinterest_pin. Default: instagram_post, instagram_story, x_post.",
+            "items": {
+              "type": "string",
+              "enum": [
+                "instagram_post",
+                "instagram_story",
+                "instagram_reel",
+                "x_post",
+                "x_header",
+                "facebook_post",
+                "facebook_cover",
+                "linkedin_post",
+                "linkedin_banner",
+                "youtube_thumbnail",
+                "tiktok_vertical",
+                "pinterest_pin"
+              ]
+            },
+            "default": [
+              "instagram_post",
+              "instagram_story",
+              "x_post"
+            ]
+          },
+          "quality": {
+            "type": "number",
+            "description": "JPEG quality on the Photoshop 1-12 scale. Default 9.",
+            "minimum": 1,
+            "maximum": 12,
+            "default": 9
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_apply_color_grade",
+      "description": "Apply a named color grading preset as a non-destructive layer group (Hue/Saturation adjustment + brightness/contrast tweak).\n\nUsers often say: cinematic look, teal and orange, moody grade, color grade.\n\nUse when: the user wants a quick stylistic look applied to the active document.\nDo NOT use when: the user wants subject-specific color edits (e.g. only the skin) — current recipe applies globally.\n\nReturns: { ok, summary, details: { preset, group_name } }.\n\nPreconditions: active document in RGB mode. CMYK/Grayscale return unsupported_color_mode.\nSide effects: adds one layer group with adjustment layers; one undo reverts.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "preset": {
+            "type": "string",
+            "description": "Preset name. One of: cinematic, vintage, teal_orange, bw, warm_film, cool_dusk. Default cinematic.",
+            "enum": [
+              "cinematic",
+              "vintage",
+              "teal_orange",
+              "bw",
+              "warm_film",
+              "cool_dusk"
+            ],
+            "default": "cinematic"
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_frequency_separation",
+      "description": "Build a frequency separation stack (Low + High) on top of the active layer for hands-on retouching. Does not apply any smoothing itself — the user paints into the layers afterwards.\n\nUsers often say: frequency separation, split texture and color, manual retouch setup.\n\nUse when: the user explicitly wants frequency separation setup, typically for portrait or product retouching.\nDo NOT use when: the user wants a one-shot result without painting — use photoshop_recipe_enhance_portrait instead.\n\nReturns: { ok, summary, details: { radius_px, group_name } }.\n\nPreconditions: active document with a NORMAL raster active layer.\nSide effects: appends a \"Frequency Separation\" layer group with 2 prepared layers; one undo reverts everything.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "radius_px": {
+            "type": "number",
+            "description": "Gaussian blur radius for the low-frequency layer. 4-8 for portraits, 10-20 for products. Default 6. Range 1-50.",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 6
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_batch_mockup_replace",
+      "description": "Iterate a directory of asset images, replace the contents of the named Smart Object in the active mockup PSD for each asset, and export a flattened JPEG per variant. The mockup's perspective/warp on the Smart Object is preserved.\n\nUse when: the user has a mockup PSD and wants to render it once per design asset (logos, screens, product photos).\nDo NOT use when: the asset is not a single layer (use photoshop_place_image manually) or when the active document has no Smart Object with the requested name.\n\nReturns: { ok, summary, output_paths, details: { variants: [{ source_asset, output_path }] } }.\n\nPreconditions: active document containing a Smart Object layer named exactly as requested; assets_dir must exist and be readable.\nSide effects: writes one JPEG per asset; the active mockup PSD ends up with the LAST asset placed.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "smart_object_layer_name": {
+            "type": "string",
+            "description": "Exact name of the Smart Object layer in the active document. Case-sensitive."
+          },
+          "assets_dir": {
+            "type": "string",
+            "description": "Absolute path to the directory containing asset files. Subdirectories are NOT recursed. Allowed extensions: jpg/jpeg/png/tif/tiff/psd/psb/webp."
+          },
+          "quality": {
+            "type": "number",
+            "description": "JPEG quality on the Photoshop 1-12 scale. Default 10.",
+            "minimum": 1,
+            "maximum": 12,
+            "default": 10
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "smart_object_layer_name",
+          "assets_dir",
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_organize_layers",
+      "description": "Tidy the active document's layer stack: rename layers using a consistent scheme and optionally auto-group them by kind. Never deletes, merges or rasterizes — visual output stays identical.\n\nUse when: the user complains about layer mess (\"layer 1 copy 2\", \"untitled 7\") or asks for organization.\nDo NOT use when: the user wants smart, semantic naming based on layer content beyond text — recipe only summarizes text layers, not image content.\n\nReturns: { ok, summary, details: { renamed_count, group_count } }.\n\nPreconditions: active document.\nSide effects: renames top-level layers and (optionally) moves them into kind-grouped folders; one undo reverts everything.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "naming_scheme": {
+            "type": "string",
+            "description": "How to rename layers: type_index (default, e.g. text_01), content_summary (text layers get a slug of their content; other kinds get type_index), preserve (do not rename).",
+            "enum": [
+              "type_index",
+              "content_summary",
+              "preserve"
+            ],
+            "default": "type_index"
+          },
+          "auto_group": {
+            "type": "boolean",
+            "description": "Group layers by kind (text / image / shape / adjustment). Default true.",
+            "default": true
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_gradient_fade",
+      "description": "One-shot gradient fade on the active layer mask: creates a reveal-all mask if needed, then paints a linear black-to-white gradient for soft edge blending. Wrapped in a single undoable history step.\n\nUsers often say: fade into background, gradient mask, blend subject, soft edge fade, arka planı yumuşat.\n\nThis applies a linear gradient on the layer mask channel — not a Gradient Fill layer.\nUse when: the user wants the active layer to fade into the background or layers below through its mask.\nDo NOT use when: the subject is not isolated — use photoshop_recipe_remove_background first.\nDo NOT use when: replacing the sky with an external image — use photoshop_recipe_sky_blend.\n\nReturns: { ok, summary, undo_history_states_consumed, details: { direction, start_pct, end_pct, mask_created, layer_name } }.\n\nPreconditions: active document with an active layer.\nSide effects: creates or modifies the active layer mask; one undo reverts everything.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "direction": {
+            "type": "string",
+            "description": "Gradient fade direction on the mask (default bottom_to_top)",
+            "enum": [
+              "top_to_bottom",
+              "bottom_to_top",
+              "left_to_right",
+              "right_to_left"
+            ],
+            "default": "bottom_to_top"
+          },
+          "start_pct": {
+            "type": "number",
+            "description": "Gradient start along fade axis (0-100)",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 0
+          },
+          "end_pct": {
+            "type": "number",
+            "description": "Gradient end along fade axis (0-100)",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 100
+          },
+          "angle_deg": {
+            "type": "number",
+            "description": "Optional gradient angle override in degrees"
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_sky_blend",
+      "description": "One-shot sky composite: places an external sky image, adds a layer mask, and applies a horizon gradient fade. Wrapped in a single undoable history step.\n\nUsers often say: replace sky, fix blown sky, better clouds, swap sky background.\n\nUse when: the user provides a sky image path and native sky replacement is unavailable or manual blend is preferred.\nDo NOT use when: no sky_image_path is available — ask the user for an absolute file path first.\nDo NOT use when: fading the active subject layer only — use photoshop_recipe_gradient_fade.\n\nReturns: { ok, summary, undo_history_states_consumed, details: { sky_image_path, layer_name, horizon_pct, feather_pct, direction } }.\n\nPreconditions: active document; sky image file must exist on disk.\nSide effects: adds a placed sky layer with gradient mask; one undo reverts everything.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "sky_image_path": {
+            "type": "string",
+            "description": "Absolute path to the sky image file (JPEG, PNG, etc.)"
+          },
+          "horizon_pct": {
+            "type": "number",
+            "description": "Document-height percentage where sky meets landscape (0-100, default 50)",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 50
+          },
+          "feather_pct": {
+            "type": "number",
+            "description": "Half-width of the transition zone around the horizon (0-50, default 15)",
+            "minimum": 0,
+            "maximum": 50,
+            "default": 15
+          },
+          "x": {
+            "type": "number",
+            "description": "Placement X offset in pixels (default 0)",
+            "default": 0
+          },
+          "y": {
+            "type": "number",
+            "description": "Placement Y offset in pixels (default 0)",
+            "default": 0
+          },
+          "use_native_sky": {
+            "type": "boolean",
+            "description": "Try native Sky Replacement first when supported (default true when capable)"
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "sky_image_path",
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_dodge_burn",
+      "description": "One-shot dodge & burn setup: creates a 50% gray layer in Overlay or Soft Light mode for non-destructive light sculpting. Wrapped in a single undoable history step.\n\nUsers often say: dodge and burn, sculpt light, lighten face, darken shadows.\n\nUse when: the user wants a ready-to-paint dodge & burn layer above the subject.\nDo NOT use when: the user wants automated retouch — this only sets up the paint layer; paint white (dodge) and black (burn) manually at low opacity.\nDo NOT use when: automated portrait smoothing is enough — use photoshop_recipe_enhance_portrait instead.\n\nReturns: { ok, summary, undo_history_states_consumed, details: { layer_name, blend_mode } }.\n\nPreconditions: active document with a raster-compatible active layer.\nSide effects: adds one \"Dodge & Burn\" layer above the active layer; one undo reverts.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "blend_mode": {
+            "type": "string",
+            "description": "Retouch blend mode: overlay (default, stronger) or soft_light (gentler)",
+            "enum": [
+              "overlay",
+              "soft_light"
+            ],
+            "default": "overlay"
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_remove_distraction",
+      "description": "One-shot distraction removal: generative AI remove when available, else content-aware fill. Wrapped in a single undoable history step.\n\nUsers often say: remove that person, erase distraction, content aware remove, clone out object.\n\nUse when: the user has selected the object or region to remove.\nDo NOT use when: no selection exists — use photoshop_select_rectangle or photoshop_select_subject first.\n\nReturns: { ok, summary, undo_history_states_consumed, details }.\nPreconditions: active document with an active pixel selection.\nSide effects: fills/removes selected pixels; clears selection.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "feather_px": {
+            "type": "number",
+            "description": "Edge feather in pixels before remove (0-20, default 0)",
+            "minimum": 0,
+            "maximum": 20,
+            "default": 0
+          },
+          "use_generative": {
+            "type": "boolean",
+            "description": "Prefer generative remove when Photoshop supports it (default true when capable)"
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_split_carousel",
+      "description": "Split the active wide document into N equal vertical slices and export them as sequentially numbered files for a seamless Instagram/TikTok carousel (panorama swipe effect).\n\nUse when: the user wants a seamless/swipeable carousel, split panorama, or multi-slide export of one wide design. Typical request: \"split this into a 5-slide carousel\".\nDo NOT use when: the user wants the same content reframed per platform (use photoshop_recipe_export_social_variants) or a single crop (use photoshop_crop_document).\n\nReturns: { ok, summary, output_paths (in slide order), details: { slides, slice_width } }.\n\nPreconditions: active document whose width is at least `slides` pixels.\nSide effects: writes one file per slide; source document is unchanged.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "slides": {
+            "type": "number",
+            "description": "Number of carousel slides to split into (2-10).",
+            "minimum": 2,
+            "maximum": 10
+          },
+          "slide_width": {
+            "type": "number",
+            "description": "Optional final slide width in px (e.g. 1080). Requires slide_height. Each slice is center-cropped/resized to this size. Omit to keep native slice dimensions."
+          },
+          "slide_height": {
+            "type": "number",
+            "description": "Optional final slide height in px (e.g. 1350 for Instagram portrait). Requires slide_width."
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "jpg",
+              "png"
+            ],
+            "description": "Output format. Default jpg.",
+            "default": "jpg"
+          },
+          "quality": {
+            "type": "number",
+            "description": "JPEG quality on the Photoshop 1-12 scale (jpg only). Default 10.",
+            "minimum": 1,
+            "maximum": 12,
+            "default": 10
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "slides",
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_batch_watermark",
+      "description": "Apply a text or logo watermark to every image in a folder and export watermarked JPEGs. Replaces the clunky record-an-action + File > Automate > Batch workflow.\n\nUse when: the user wants to watermark many photos at once (copyright text, studio logo).\nDo NOT use when: watermarking a single open document (use photoshop_create_text_layer / photoshop_place_image directly) or removing watermarks (not supported).\n\nReturns: { ok, summary, output_paths, details: { processed, failed: [{ file, error }] } }. Files that fail are skipped, not fatal.\n\nPreconditions: assets_dir exists; either text or logo_path given. No active document required.\nSide effects: writes one JPEG per source image; source files are never modified.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "assets_dir": {
+            "type": "string",
+            "description": "Absolute path to the folder of images to watermark. Subdirectories are NOT recursed. Allowed extensions: jpg/jpeg/png/tif/tiff/webp."
+          },
+          "text": {
+            "type": "string",
+            "description": "Watermark text (e.g. \"© Jane Doe 2026\"). White, semi-transparent. Required unless logo_path is given."
+          },
+          "logo_path": {
+            "type": "string",
+            "description": "Absolute path to a logo image (transparent PNG recommended). Required unless text is given. If both are given, text wins."
+          },
+          "position": {
+            "type": "string",
+            "enum": [
+              "bottom_right",
+              "bottom_left",
+              "top_right",
+              "top_left",
+              "center"
+            ],
+            "description": "Watermark placement. Default bottom_right.",
+            "default": "bottom_right"
+          },
+          "opacity": {
+            "type": "number",
+            "description": "Watermark layer opacity 0-100. Default 40.",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 40
+          },
+          "margin_px": {
+            "type": "number",
+            "description": "Distance from the chosen edge(s) in pixels. Default 24 (ignored for center).",
+            "minimum": 0,
+            "default": 24
+          },
+          "font_size": {
+            "type": "number",
+            "description": "Text watermark size in pixels. Default 0 = auto (4% of each image height, min 8px).",
+            "minimum": 0,
+            "default": 0
+          },
+          "scale_pct": {
+            "type": "number",
+            "description": "Logo watermark width as a percentage of image width (1-100). Default 15. Logo mode only.",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 15
+          },
+          "quality": {
+            "type": "number",
+            "description": "JPEG quality on the Photoshop 1-12 scale. Default 10.",
+            "minimum": 1,
+            "maximum": 12,
+            "default": 10
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "assets_dir",
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_passport_photo",
+      "description": "Turn the active portrait into a passport/ID photo: removes the background via Select Subject, replaces it with white, crops around the subject with ICAO-style headroom, resizes to the exact official pixel size at 300 DPI, and exports a JPEG. Optionally also builds a 10×15 cm print sheet with multiple copies.\n\nUse when: passport photo, visa photo, ID photo, vesikalık, biyometrik fotoğraf.\nDo NOT use when: the document has no clear single subject, or official compliance must be guaranteed — head-size rules are approximated from subject bounds (no face detection); official acceptance is NOT guaranteed.\n\nReturns: { ok, summary, output_paths, details: { spec, width, height, sheet } }.\n\nPreconditions: PS ≥ 23 (Select Subject v2); active document with a single-person portrait.\nSide effects: writes one JPEG (+ one sheet JPEG when make_sheet); source document is unchanged.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "spec": {
+            "type": "string",
+            "enum": [
+              "us_2x2",
+              "eu_35x45",
+              "tr_50x60"
+            ],
+            "description": "Target size: us_2x2 (600×600 px), eu_35x45 (413×531 px), tr_50x60 (591×709 px). All at 300 DPI. Default us_2x2.",
+            "default": "us_2x2"
+          },
+          "make_sheet": {
+            "type": "boolean",
+            "description": "Also export a 10×15 cm (1200×1800 px @300 DPI) print sheet tiled with copies. Default false.",
+            "default": false
+          },
+          "quality": {
+            "type": "number",
+            "description": "JPEG quality on the Photoshop 1-12 scale. Default 11.",
+            "minimum": 1,
+            "maximum": 12,
+            "default": 11
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_csv_to_cards",
+      "description": "Data-driven graphics batch: convert a CSV file into Photoshop data sets, apply each row to the active template document and export one image per row. \"Mail merge for images\" — name cards, badges, certificates, personalized banners.\n\nUsers often say: csv to images, batch name cards, personalized banners, generate badges from spreadsheet, sertifika bastır.\n\nCSV rules: first row = variable names matching the variables defined in the template PSD (Image > Variables > Define). A cell holding an absolute path to an image file (.png/.jpg/.webp/.tif/.psd) is treated as a pixel-replacement variable.\n\nUse when: the user has a template PSD with variable-bound layers and a CSV of rows.\nDo NOT use when: the document has no variables defined — define them in Photoshop first (Image > Variables > Define).\n\nReturns: { ok, summary, details: { rows, exported, output_paths, xml_path } }.\n\nPreconditions: active document with variable-bound layers; readable CSV file.\nSide effects: writes a temp variables XML and one output file per row into output_dir.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "csv_path": {
+            "type": "string",
+            "description": "Absolute path to the CSV file (first row = variable names)"
+          },
+          "output_dir": {
+            "type": "string",
+            "description": "Directory for generated files (created if missing)"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "JPEG",
+              "PNG"
+            ],
+            "description": "Output format (default JPEG)",
+            "default": "JPEG"
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "csv_path",
+          "output_dir",
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "photoshop_recipe_sticker_outline",
+      "description": "One-shot sticker / white-border outline. single: applies a solid stroke plus (optionally) a soft drop shadow to the active layer. die_cut: the classic double outline — a white border with a thin dark outer line — built by adding two stroked copies of the active layer. Both run in one undoable history step.\n\nUsers often say: sticker, white border, white outline, cut-out border, die-cut sticker, double outline, 贴画, 白边描边, 一键白边, sticker effect, kontur ekle, beyaz çerçeve, çift çizgi.\n\nUse when: the user wants a sticker-style white outline around the active layer, optionally with a drop shadow, without assembling multiple layer styles by hand. Use outline_style=\"die_cut\" when they ask for a die-cut / double-line sticker.\nDo NOT use when: the user wants a single plain effect — use photoshop_apply_layer_style. Do NOT use when: the layer must first be isolated — use photoshop_recipe_remove_background first when there is still a background.\n\nReturns: { ok, summary, undo_history_states_consumed, details: { outline_style, layer_name, stroke_width, stroke_position, stroke_rgb, shadow, border_layer?, line_layer? } }.\n\nPreconditions: active document with a non-group active layer (pixel, text, or smart object). The white stroke defaults to 12px outside. die_cut forces the stroke outside and adds two layers named \"<layer> - white border\" and \"<layer> - dark line\".\nSide effects: single sets the stroke (and adds/removes the drop shadow) on the active layer, preserving other existing effects. die_cut adds two stroked copies (original layer untouched on top). One undo reverts everything.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "red": {
+            "type": "number",
+            "description": "Stroke color red (0-255, default 255 = white)",
+            "minimum": 0,
+            "maximum": 255,
+            "default": 255
+          },
+          "green": {
+            "type": "number",
+            "description": "Stroke color green (0-255, default 255 = white)",
+            "minimum": 0,
+            "maximum": 255,
+            "default": 255
+          },
+          "blue": {
+            "type": "number",
+            "description": "Stroke color blue (0-255, default 255 = white)",
+            "minimum": 0,
+            "maximum": 255,
+            "default": 255
+          },
+          "stroke_width": {
+            "type": "number",
+            "description": "Stroke width in pixels (default 12)",
+            "minimum": 0,
+            "maximum": 250,
+            "default": 12
+          },
+          "stroke_opacity": {
+            "type": "number",
+            "description": "Stroke opacity (0-100, default 100)",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 100
+          },
+          "stroke_position": {
+            "type": "string",
+            "description": "Where the stroke sits relative to the layer edge: outside (default sticker look), inside, or center.",
+            "enum": [
+              "outside",
+              "inside",
+              "center"
+            ],
+            "default": "outside"
+          },
+          "shadow": {
+            "type": "boolean",
+            "description": "Add a soft drop shadow under the sticker (default true).",
+            "default": true
+          },
+          "shadow_opacity": {
+            "type": "number",
+            "description": "Drop shadow opacity (0-100, default 40)",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 40
+          },
+          "shadow_size": {
+            "type": "number",
+            "description": "Drop shadow blur in pixels (default 12)",
+            "minimum": 0,
+            "maximum": 250,
+            "default": 12
+          },
+          "shadow_distance": {
+            "type": "number",
+            "description": "Drop shadow offset distance in pixels (default 6)",
+            "minimum": 0,
+            "maximum": 250,
+            "default": 6
+          },
+          "shadow_angle": {
+            "type": "number",
+            "description": "Drop shadow light angle in degrees (default 120)",
+            "minimum": -360,
+            "maximum": 360,
+            "default": 120
+          },
+          "outline_style": {
+            "type": "string",
+            "description": "single (default): white border + optional shadow on the active layer. die_cut: the classic double outline — a white border plus a thin dark outer line — built by adding two stroked copies of the active layer (the original stays on top; stroke_position is forced to 'outside').",
+            "enum": [
+              "single",
+              "die_cut"
+            ],
+            "default": "single"
+          },
+          "line_width": {
+            "type": "number",
+            "description": "die_cut only: thickness of the dark outer line in pixels (default 3)",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 3
+          },
+          "line_red": {
+            "type": "number",
+            "description": "die_cut only: dark line color red (0-255, default 0 = black)",
+            "minimum": 0,
+            "maximum": 255,
+            "default": 0
+          },
+          "line_green": {
+            "type": "number",
+            "description": "die_cut only: dark line color green (0-255, default 0 = black)",
+            "minimum": 0,
+            "maximum": 255,
+            "default": 0
+          },
+          "line_blue": {
+            "type": "number",
+            "description": "die_cut only: dark line color blue (0-255, default 0 = black)",
+            "minimum": 0,
+            "maximum": 255,
+            "default": 0
+          },
+          "document_id": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Photoshop document id from photoshop_get_state / photoshop_list_documents. Send null or 0 to use the active document. A positive number activates that document before the tool runs. When no document is open, a stale id does not block the call."
+          }
+        },
+        "required": [
+          "document_id"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ],
+  "prompt_names": [
+    "ps.enhance_portrait",
+    "ps.remove_background",
+    "ps.prepare_for_web",
+    "ps.export_social_variants",
+    "ps.apply_color_grade",
+    "ps.frequency_separation",
+    "ps.batch_mockup_replace",
+    "ps.organize_layers",
+    "ps.gradient_fade",
+    "ps.sky_blend",
+    "ps.dodge_burn",
+    "ps.remove_distraction",
+    "ps.gradient_blend",
+    "ps.color_correct",
+    "ps.composite_blend",
+    "ps.dodge_burn_guide",
+    "ps.generative_fill",
+    "ps.generative_remove",
+    "ps.generative_expand",
+    "ps.split_carousel",
+    "ps.batch_watermark",
+    "ps.passport_photo",
+    "ps.csv_to_cards",
+    "ps.sticker_outline"
+  ],
+  "preserved_upstream_skills": [
+    "photoshop-mcp/skills/photoshop-recipes/SKILL.md",
+    "photoshop-mcp/skills/photoshop-remove-background/SKILL.md"
+  ],
+  "contradictions_reference": "compatibility.md",
+  "other_recipes": "interfaces/routing inspected; not executed or visually validated in this batch",
+  "validation_note": "See validation-history.json for historical summaries. Interfaces are snapshots, not guarantees of support on the recipient machine."
+}
